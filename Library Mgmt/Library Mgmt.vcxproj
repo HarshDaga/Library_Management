@@ -70,8 +70,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Reference Include="MySql.Data, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d" />
+    <Reference Include="MySql.Data.Entity, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d" />
+    <Reference Include="MySql.Fabric.Plugin, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d" />
+    <Reference Include="MySql.Web.v20, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -86,6 +91,7 @@
     <ClInclude Include="BooksUI.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="common.h" />
     <ClInclude Include="FacultyUI.h">
       <FileType>CppForm</FileType>
     </ClInclude>
