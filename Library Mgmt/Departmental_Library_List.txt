@@ -1,0 +1,102 @@
+54	Sachin Deshpande	A First Course in Database System	Jeffrey D. Ullman
+74	Sachin Deshpande	C++(For Beginners..Masters)	Ankit Asthana
+42	Sneha Annappanavar	Cloud Computing	Anthony Velte
+93	Pankaj Vanvari	Compiler Design	Dr. O. G. Kakde
+97	Pankaj Vanvari	Compiler Design	Dr. O. G. Kakde
+98	Pankaj Vanvari	Compiler Design	Muneeswaram
+33	Amit Dhanwani	Compiler Design	K.Muneeswaran
+44	Suja Jayachandran	Compiler Design	K.Muneeswaran
+24	Kavita Shirsat	Computer Graphics	Er.Rajiv Chopra
+70	Sachin Deshpande	Computer Graphics	Sanjesh S.Pawale
+72	Sachin Deshpande	Computer Graphics	Zhigng Xiang
+73	Sachin Deshpande	Computer Graphics	Amarendra N.sinha
+79	Sachin Deshpande	Computer Graphics	Tata McGraw Hill Publication
+71	Sachin Deshpande	Computer Graphics &Virtual Reality	Sanjesh S.Pawale
+47	Sachin Deshpande	Computer Network	V.S. Bagad, I.A. Dhotre
+106	Amit Nerurkar	Computer Organisation & Architechture	William Stallings
+1	Rugved Deolekar	Computer Programming - I	M.P Bhave, S.A Patekar
+4	Rugved Deolekar	Computer Programming - I	Pimparkhede Kunal
+7	Rugved Deolekar	Computer Programming - I	Anu Bhatia
+51	Sachin Deshpande	Computer Programming - I	Kunal Pimparkhede
+53	Sachin Deshpande	Computer Programming - I	Vinaya M. Rawool
+75	Sachin Deshpande	Computer Programming - I	M.P Bhave, S.A Patekar
+57	Sachin Deshpande	Data Communication & Computer Networks	McGraw Hill Publication
+52	Sachin Deshpande	Data Mining Techniques	Michael J. A. Berry
+49	Sachin Deshpande	Data Modelling and Database Design	Narayan .S. Umanath
+11	Rugved Deolekar	Data structure algorithm in JAVA	Micheal T.Goodrich
+12	Rugved Deolekar	Data structure using C	Reema Thareja
+13	Rugved Deolekar	Data structure using C	Reema Thareja
+101	Swapnil Sonawane	Data Structures & Algorithm in C++	Brijendra Kumar Joshi
+30	Kavita Shirsat	Data Warehousing & Data Mining	ITL Education
+55	Sachin Deshpande	Database Management & Oracle Programming	Dr. S. S. Khandare
+31	Kavita Shirsat	Database Management System	Mahesh Mali
+58	Sachin Deshpande	Database Management System	Keval Veera
+64	Sachin Deshpande	Database Management System	Mahesh Mali
+77	Sachin Deshpande	Database Management System	Mahesh Mali
+83	Sachin Deshpande	Database Management System	Saiqa Mohammed Shaikh
+95	Pankaj Vanvari	Database Management System	Mrs. Pallavi Kulkarni
+61	Sachin Deshpande	Database System	Michael Kiter, Austha B.
+81	Sachin Deshpande	Database System	S.k Singh
+15	Prita Patil	Distributed Computing	Sunita Mahajan, Seema Shah
+99	Swapnil Sonawane	Distributed Computing	Sunita Mahajan
+102	Swapnil Sonawane	E-Business & E-Commerce Management	Dane Chaffey
+56	Sachin Deshpande	E-commerce	T. N. Chhabra
+78	Sachin Deshpande	Elements Of Discrete Mathematics	C.L Liu
+62	Sachin Deshpande	Embedded C Programming & the Atmel AVR	Barnett
+18	Kavita Shirsat	Foundations of Information Technology	D.S Yadav
+63	Sachin Deshpande	Introduction to Database Management	Mark L. Gillenron
+66	Sachin Deshpande	Management Information System	A.K. Mehta, M.M. Bhatkar
+16	Prita Patil	Microprocessor	Harish Narula
+41	Sneha Annappanavar	Mobile Computing	Raj Kamal
+29	Kavita Shirsat	Modern Digital Electronics	RP Jain
+59	Sachin Deshpande	Multimedia System	John F. Koegel Buford
+50	Sachin Deshpande	Numerical Techniques	J.S. Chitode
+20	Kavita Shirsat	Object oriented analysis and design	John Deacon
+28	Kavita Shirsat	Object Oriented Analysis and design using UML	D Jeya Mala, S.Geetha
+39	Sneha Annappanavar	Object Oriented Analysis and design using UML	D Jeya Mala, S.Geetha
+80	Sachin Deshpande	Object Oriented Programming C++	E. Balaguruswamy
+8	Rugved Deolekar	Object Oriented Programming C++	E. Balaguruswamy
+14	Prita Patil	Operating Systems	Naresh Chauhan
+65	Sachin Deshpande	Oracle 10g SQL	Joan Casteel
+60	Sachin Deshpande	Parallel Computing	M. R. Bhujade
+32	Amit Dhanwani	Principles of complier design	V.Raghavan
+43	Suja Jayachandran	Principles of complier design	V.Raghavan
+82	Sachin Deshpande	Programming in ANSI	E. Balaguruswamy
+5	Rugved Deolekar	Programming in ANSI C	E. Balaguruswamy
+6	Rugved Deolekar	Programming in ANSI C	E. Balaguruswamy
+2	Rugved Deolekar	Programming in C 	Reema Thareja
+3	Rugved Deolekar	Programming in C 	Pradip Dey, Manas Ghosh
+100	Swapnil Sonawane	Programming in C#	E. Balaguruswamy
+25	Kavita Shirsat	Programming in C++	P.B Mahapatra
+9	Rugved Deolekar	Programming in Java	Sachin Malhotra
+10	Rugved Deolekar	Programming in Java	Sachin Malhotra
+17	Kavita Shirsat	Software engineering	Jibitesh Mishra, Ashok Moharty
+21	Kavita Shirsat	Software engineering	Jibitesh Mishra, Ashok Moharty
+26	Kavita Shirsat	Software engineering	Deven N.Shah, Dilip Motwani
+38	Sneha Annappanavar	Structured and object oriented analysis and design	Tulshiam Sule
+104	Mandar Soni	Structured Programming Approach	Sanket Panket Panarkar
+40	Sneha Annappanavar	System analysis and design methods methods	Jeffrey whitter
+36	Amit Dhanwani	System Programming	Srimanta Pal
+37	Amit Dhanwani	System Programming	D.M. Dhandhere
+45	Suja Jayachandran	System Programming	Srimanta Pal
+92	Pankaj Vanvari	System Programming	Surati Jain
+94	Pankaj Vanvari	System Programming & Compiler Construction	Navin Israni
+96	Pankaj Vanvari	System Programming & Compiler Construction	Shweta A. Loonkar
+68	Sachin Deshpande	System Software	Leland L.Beck
+84	Pankaj Vanvari	Taxonomy of Database Management System	Aditya Kumar Gupta
+48	Sachin Deshpande	The Datawarehouse Toolkit	Ralph Kimball
+89	Pankaj Vanvari	Theoritical Computer Science	Dilip Kumar Sultania
+85	Pankaj Vanvari	Theory Of Automata,Formal Languages & Computation	S.P.Eugene Xavier
+34	Amit Dhanwani	Theory Of Computation	Vivek Kulkarni
+86	Pankaj Vanvari	Theory Of Computation	Dr. O. G. Kakde
+90	Pankaj Vanvari	Theory Of Computation	Vivek Kulkarni
+91	Pankaj Vanvari	Theory Of Computation	Dr. O. G. Kakde
+35	Amit Dhanwani	Theory Of Computer Science	Dilip kumar Sultania
+46	Suja Jayachandran	Theory Of Computer Science	Drishti Bhatia
+87	Pankaj Vanvari	Theory Of Computer Science	Drishti Bhatia
+88	Pankaj Vanvari	Theory Of Computer Science	Vivek Kulkarni
+69	Sachin Deshpande	Web Design Technology	D.P.Nagpal
+22	Kavita Shirsat	Web Engineering	Ms.Snehal Suryavanshi
+23	Kavita Shirsat	Web Engineering	Gerti Kapell, Birgit Proll
+27	Kavita Shirsat	Web Engineering	Ms.Snehal Suryavanshi
+19	Kavita Shirsat	Web Technology	Sagar Nagda, Abhishek Baliya

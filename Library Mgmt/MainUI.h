@@ -66,12 +66,14 @@ namespace LibraryMgmt {
 			// 
 			// btFaculty
 			// 
+			this->btFaculty->BackColor = System::Drawing::SystemColors::Control;
+			this->btFaculty->Cursor = System::Windows::Forms::Cursors::Default;
 			this->btFaculty->Location = System::Drawing::Point ( 12, 244 );
 			this->btFaculty->Name = L"btFaculty";
 			this->btFaculty->Size = System::Drawing::Size ( 140, 88 );
 			this->btFaculty->TabIndex = 0;
 			this->btFaculty->Text = L"Faculty";
-			this->btFaculty->UseVisualStyleBackColor = true;
+			this->btFaculty->UseVisualStyleBackColor = false;
 			this->btFaculty->Click += gcnew System::EventHandler ( this, &MainUI::btFaculty_Click );
 			// 
 			// btBooks
@@ -81,7 +83,7 @@ namespace LibraryMgmt {
 			this->btBooks->Size = System::Drawing::Size ( 152, 88 );
 			this->btBooks->TabIndex = 1;
 			this->btBooks->Text = L"Books";
-			this->btBooks->UseVisualStyleBackColor = true;
+			this->btBooks->UseVisualStyleBackColor = false;
 			this->btBooks->Click += gcnew System::EventHandler ( this, &MainUI::btBooks_Click );
 			// 
 			// MainUI
@@ -101,13 +103,21 @@ namespace LibraryMgmt {
 #pragma endregion
 	private: System::Void btFaculty_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
-		facUI->Show ( );
+		if ( !facUI->Visible )
+		{
+			facUI = gcnew FacultyUI ( );
+			facUI->Show ( );
+		}
 		facUI->Focus ( );
 	}
 
 	private: System::Void btBooks_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
-		booksUI->Show ( );
+		if ( !booksUI->Visible )
+		{
+			booksUI = gcnew BooksUI ( );
+			booksUI->Show ( );
+		}
 		booksUI->Focus ( );
 	}
 	};
