@@ -16,8 +16,8 @@ namespace LibraryMgmt
 	/// </summary>
 	public ref class FacultyUI : public System::Windows::Forms::Form
 	{
-	public:
 
+	public:
 		FacultyUI ( void )
 		{
 			InitializeComponent ( );
@@ -39,7 +39,7 @@ namespace LibraryMgmt
 		}
 
 
-
+#pragma region Controls
 	private: System::Windows::Forms::ErrorProvider^  errorProvider;
 
 	private: System::Windows::Forms::GroupBox^  gbAddBook;
@@ -53,7 +53,7 @@ namespace LibraryMgmt
 	private: System::Windows::Forms::Label^  lblAuthor;
 	private: System::Windows::Forms::ComboBox^  cbCategory;
 	private: System::Windows::Forms::ComboBox^  cbBookName;
-
+#pragma endregion
 
 
 
@@ -234,140 +234,57 @@ namespace LibraryMgmt
 		String ^category = cbCategory->Text;
 		String ^owner = cbOwner->Text;
 		int author_id, book_id, owner_id, category_id, status = 0;
-
 		errorProvider->Clear ( );
 
-		if ( String::IsNullOrEmpty ( name ) )
-			status |= 0x1;
-		if ( String::IsNullOrEmpty ( author ) )
-			status |= 0x10;
-		if ( String::IsNullOrEmpty ( category ) )
-			status |= 0x100;
-		if ( String::IsNullOrEmpty ( owner ) )
-			status |= 0x1000;
-
-		if ( !( status & 0x10 ) )
+		if ( !( String::IsNullOrEmpty ( author ) ) )
 		{
-			auto reader = CDBManager::query ( "SELECT id FROM authors WHERE name = '" + author + "'" );
-			if ( reader->Read ( ) )
-				author_id = reader->GetInt32 ( 0 );
-			else
-			{
-				auto cmd = CDBManager::getCmd ( "INSERT INTO authors(name)"
-												"VALUES(@name)" );
-				cmd->Prepare ( );
-				cmd->Parameters->AddWithValue ( "@name", author );
-				cmd->ExecuteNonQuery ( );
-				author_id = (int) cmd->LastInsertedId;
-				cbAuthor_Fetch ( );
-			}
+			author_id = CLibDBManager::addAuthor ( author );
+			cbAuthor_Fetch ( );
 		}
-
-		if ( !( status & 0x100 ) )
+		if ( !( String::IsNullOrEmpty ( category ) ) )
 		{
-			auto reader = CDBManager::query ( "SELECT id FROM categories WHERE name = '" + category + "'" );
-			if ( reader->Read ( ) )
-				category_id = reader->GetInt32 ( 0 );
-			else
-			{
-				auto cmd = CDBManager::getCmd ( "INSERT INTO categories(name)"
-												"VALUES(@name)" );
-				cmd->Prepare ( );
-				cmd->Parameters->AddWithValue ( "@name", category );
-				cmd->ExecuteNonQuery ( );
-				category_id = (int) cmd->LastInsertedId;
-				cbCategory_Fetch ( );
-			}
+			category_id = CLibDBManager::addCategory ( category );
+			cbCategory_Fetch ( );
 		}
-
-		if ( !( status & 0x100 ) )
+		if ( !( String::IsNullOrEmpty ( name ) ) )
 		{
-			auto reader = CDBManager::query ( "SELECT id FROM books WHERE name = '" + name + "'" );
-			if ( reader->Read ( ) )
-				book_id = reader->GetInt32 ( 0 );
-			else
-			{
-				auto cmd = CDBManager::getCmd ( "INSERT INTO books(name)"
-												"VALUES(@name)" );
-				cmd->Prepare ( );
-				cmd->Parameters->AddWithValue ( "@name", name );
-				cmd->ExecuteNonQuery ( );
-				book_id = (int) cmd->LastInsertedId;
-				cbBookName_Fetch ( );
-			}
+			book_id = CLibDBManager::addBook ( name );
+			cbBookName_Fetch ( );
 		}
-
-		if ( !( status & 0x1000 ) )
+		if ( !( String::IsNullOrEmpty ( owner ) ) )
 		{
-			auto reader = CDBManager::query ( "SELECT id FROM staff WHERE name = '" + owner + "'" );
-			if ( reader->Read ( ) )
-				owner_id = reader->GetInt32 ( 0 );
-			else
-			{
-				auto cmd = CDBManager::getCmd ( "INSERT INTO staff(name)"
-												"VALUES(@name)" );
-				cmd->Prepare ( );
-				cmd->Parameters->AddWithValue ( "@name", owner );
-				cmd->ExecuteNonQuery ( );
-				owner_id = (int) cmd->LastInsertedId;
-				cbOwner_Fetch ( );
-			}
+			owner_id = CLibDBManager::addStaff ( owner );
+			cbOwner_Fetch ( );
 		}
-
-		if ( !status )
-		{
-			auto cmd = CDBManager::getCmd ( "INSERT INTO library(book_id, author_id, owner_id, category_id)"
-											"VALUES(@book_id, @author_id, @owner_id, @category_id)" );
-			cmd->Prepare ( );
-			cmd->Parameters->AddWithValue ( "@book_id", book_id );
-			cmd->Parameters->AddWithValue ( "@author_id", author_id );
-			cmd->Parameters->AddWithValue ( "@owner_id", owner_id );
-			cmd->Parameters->AddWithValue ( "@category_id", category_id );
-			cmd->ExecuteNonQuery ( );
-		}
+		if ( author_id && book_id && owner_id && category_id )
+			CDBManager::insert ( "library", "book_id, author_id, owner_id, category_id",
+								 book_id, author_id, owner_id, category_id );
 	}
 
 	private: System::Void cbAuthor_Fetch ( )
 	{
-		auto reader = CDBManager::query ( "SELECT * FROM authors" );
-		Strings ^names = gcnew Strings ( );
-		while ( reader->Read ( ) )
-			names->Add ( reader->GetString ( 1 ) );
-		reader->Close ( );
+		auto names = CLibDBManager::getAuthors ( );
 		cbAuthor->Items->Clear ( );
 		cbAuthor->Items->AddRange ( names->ToArray ( ) );
 	}
 
 	private: System::Void cbCategory_Fetch ( )
 	{
-		auto reader = CDBManager::query ( "SELECT * FROM categories" );
-		Strings ^categories = gcnew Strings ( );
-		while ( reader->Read ( ) )
-			categories->Add ( reader->GetString ( 1 ) );
-		reader->Close ( );
+		auto categories = CLibDBManager::getCategories ( );
 		cbCategory->Items->Clear ( );
 		cbCategory->Items->AddRange ( categories->ToArray ( ) );
-		cbCategory->Refresh ( );
 	}
 
 	private: System::Void cbOwner_Fetch ( )
 	{
-		auto reader = CDBManager::query ( "SELECT * FROM staff" );
-		Strings ^names = gcnew Strings ( );
-		while ( reader->Read ( ) )
-			names->Add ( reader->GetString ( 1 ) );
-		reader->Close ( );
+		auto names = CLibDBManager::getStaff ( );
 		cbOwner->Items->Clear ( );
 		cbOwner->Items->AddRange ( names->ToArray ( ) );
 	}
 
 	private: System::Void cbBookName_Fetch ( )
 	{
-		auto reader = CDBManager::query ( "SELECT * FROM books" );
-		Strings ^names = gcnew Strings ( );
-		while ( reader->Read ( ) )
-			names->Add ( reader->GetString ( 1 ) );
-		reader->Close ( );
+		auto names = CLibDBManager::getBooks ( );
 		cbBookName->Items->Clear ( );
 		cbBookName->Items->AddRange ( names->ToArray ( ) );
 	}
@@ -407,7 +324,6 @@ namespace LibraryMgmt
 
 			auto cmd = CDBManager::getCmd ( "INSERT INTO library(book_id, author_id, owner_id)"
 											"VALUES(@book_id, @author_id, @owner_id)" );
-			cmd->Prepare ( );
 			cmd->Parameters->AddWithValue ( "@book_id", i_book );
 			cmd->Parameters->AddWithValue ( "@author_id", i_author );
 			cmd->Parameters->AddWithValue ( "@owner_id", i_owner );

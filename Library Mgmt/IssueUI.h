@@ -19,6 +19,8 @@ namespace LibraryMgmt
 	public:
 
 		int lib_id, student_id, staff_id;
+	private: System::Windows::Forms::TextBox^  tbStudentName;
+	public:
 
 		IssueUI ( int lib_id )
 		{
@@ -59,6 +61,7 @@ namespace LibraryMgmt
 			this->cbStaffID = ( gcnew System::Windows::Forms::ComboBox ( ) );
 			this->btStudent = ( gcnew System::Windows::Forms::Button ( ) );
 			this->btStaff = ( gcnew System::Windows::Forms::Button ( ) );
+			this->tbStudentName = ( gcnew System::Windows::Forms::TextBox ( ) );
 			this->SuspendLayout ( );
 			// 
 			// cbStudentID
@@ -107,19 +110,29 @@ namespace LibraryMgmt
 			this->btStaff->UseVisualStyleBackColor = true;
 			this->btStaff->Click += gcnew System::EventHandler ( this, &IssueUI::btStaff_Click );
 			// 
-			// Issue_ReturnUI
+			// tbStudentName
+			// 
+			this->tbStudentName->Enabled = false;
+			this->tbStudentName->Location = System::Drawing::Point ( 41, 38 );
+			this->tbStudentName->Name = L"tbStudentName";
+			this->tbStudentName->Size = System::Drawing::Size ( 272, 20 );
+			this->tbStudentName->TabIndex = 10;
+			// 
+			// IssueUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF ( 6, 13 );
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size ( 769, 375 );
+			this->Controls->Add ( this->tbStudentName );
 			this->Controls->Add ( this->btStaff );
 			this->Controls->Add ( this->btStudent );
 			this->Controls->Add ( this->cbStaffID );
 			this->Controls->Add ( this->cbStudentID );
-			this->Name = L"Issue_ReturnUI";
-			this->Text = L"Issue_ReturnUI";
-			this->Shown += gcnew System::EventHandler ( this, &IssueUI::Issue_Return_Shown );
+			this->Name = L"IssueUI";
+			this->Text = L"IssueUI";
+			this->Shown += gcnew System::EventHandler ( this, &IssueUI::IssueUI_Shown );
 			this->ResumeLayout ( false );
+			this->PerformLayout ( );
 
 		}
 #pragma endregion
@@ -127,27 +140,19 @@ namespace LibraryMgmt
 	public:
 		void cbStudentID_Fetch ( )
 		{
-			auto reader = CDBManager::query ( "SELECT id FROM students" );
-			Strings ^names = gcnew Strings ( );
-			while ( reader->Read ( ) )
-				names->Add ( reader->GetString ( 0 ) );
-			reader->Close ( );
+			auto names = CLibDBManager::getStudents ( );
 			cbStudentID->Items->Clear ( );
 			cbStudentID->Items->AddRange ( names->ToArray ( ) );
 		}
 
 		void cbOwner_Fetch ( )
 		{
-			auto reader = CDBManager::query ( "SELECT * FROM staff" );
-			Strings ^names = gcnew Strings ( );
-			while ( reader->Read ( ) )
-				names->Add ( reader->GetString ( 1 ) );
-			reader->Close ( );
+			auto names = CLibDBManager::getStaff ( );
 			cbStaffID->Items->Clear ( );
 			cbStaffID->Items->AddRange ( names->ToArray ( ) );
 		}
 
-	private: System::Void Issue_Return_Shown ( System::Object^  sender, System::EventArgs^  e )
+	private: System::Void IssueUI_Shown ( System::Object^  sender, System::EventArgs^  e )
 	{
 		cbStudentID_Fetch ( );
 		cbOwner_Fetch ( );
@@ -156,16 +161,11 @@ namespace LibraryMgmt
 	private: System::Void btStudent_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
 		String ^student_id = cbStudentID->Text;
-		if ( cbStudentID->Items->Contains ( student_id ) )
+		if ( !cbStudentID->Items->Contains ( student_id ) )
 		{
-			auto cmd = CDBManager::getCmd ( "INSERT INTO issue_history(lib_id, student_id, issue_date) "
-											"VALUES(@lib_id, @student_id, @issue_date)");
-			cmd->Prepare ( );
-			cmd->Parameters->AddWithValue ( "@lib_id", lib_id );
-			cmd->Parameters->AddWithValue ( "@student_id", student_id );
-			cmd->Parameters->AddWithValue ( "@issue_date", ( gcnew DateTime ( ) )->Now );
-			cmd->ExecuteNonQuery ( );
 		}
+		CDBManager::insert ( "issue_history", "lib_id, student_id, issue_date",
+							 lib_id, student_id, ( gcnew DateTime ( ) )->Now );
 	}
 
 	private: System::Void btStaff_Click ( System::Object^  sender, System::EventArgs^  e )

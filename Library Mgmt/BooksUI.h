@@ -17,8 +17,8 @@ namespace LibraryMgmt
 	/// </summary>
 	public ref class BooksUI : public System::Windows::Forms::Form
 	{
-	public:
 
+	public:
 		String ^book_name, ^author_name, ^owner_name;
 		IssueUI ^issueUI;
 	private: System::Windows::Forms::Button^  btIssue;
@@ -271,33 +271,21 @@ namespace LibraryMgmt
 
 	private: System::Void cbAuthor_Fetch ( )
 	{
-		auto reader = CDBManager::query ( "SELECT * FROM authors" );
-		Strings ^names = gcnew Strings ( );
-		while ( reader->Read ( ) )
-			names->Add ( reader->GetString ( 1 ) );
-		reader->Close ( );
+		auto names = CLibDBManager::getAuthors ( );
 		cbAuthor->Items->Clear ( );
 		cbAuthor->Items->AddRange ( names->ToArray ( ) );
 	}
 
 	private: System::Void cbOwner_Fetch ( )
 	{
-		auto reader = CDBManager::query ( "SELECT * FROM staff" );
-		Strings ^names = gcnew Strings ( );
-		while ( reader->Read ( ) )
-			names->Add ( reader->GetString ( 1 ) );
-		reader->Close ( );
+		auto names = CLibDBManager::getStaff ( );
 		cbOwner->Items->Clear ( );
 		cbOwner->Items->AddRange ( names->ToArray ( ) );
 	}
 
 	private: System::Void cbBookName_Fetch ( )
 	{
-		auto reader = CDBManager::query ( "SELECT * FROM books" );
-		Strings ^names = gcnew Strings ( );
-		while ( reader->Read ( ) )
-			names->Add ( reader->GetString ( 1 ) );
-		reader->Close ( );
+		auto names = CLibDBManager::getBooks ( );
 		cbBookName->Items->Clear ( );
 		cbBookName->Items->AddRange ( names->ToArray ( ) );
 	}
