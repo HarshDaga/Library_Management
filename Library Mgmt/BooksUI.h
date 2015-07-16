@@ -309,42 +309,34 @@ namespace LibraryMgmt
 	public: void UpdateConstraints ( )
 	{
 		// TODO
+		DSFILTER = "ID >=1 ";
+		if ( !String::IsNullOrEmpty ( book_name ) )
+			DSFILTER += "AND Book = '" + book_name + "' ";
+		if ( !String::IsNullOrEmpty ( author_name ) )
+			DSFILTER += "AND Author = '" + author_name + "' ";
+		if ( !String::IsNullOrEmpty ( owner_name ) )
+			DSFILTER += "AND Owner = '" + owner_name + "' ";
 	}
 
 	private: System::Void btBookName_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
 		auto index = cbBookName->SelectedIndex;
-		if ( index == -1 )
-		{
-			DSFILTER = book_name = "";
-			return;
-		}
-		book_name = cbBookName->Text;
-		DSFILTER = "ID >= 1 AND Book = '" + book_name + "'";
+		book_name = ( index == -1 ) ? "" : cbBookName->Text;
+		UpdateConstraints ( );
 	}
 
 	private: System::Void btAuthor_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
 		auto index = cbAuthor->SelectedIndex;
-		if ( index == -1 )
-		{
-			DSFILTER = author_name = "";
-			return;
-		}
-		author_name = cbAuthor->Text;
-		DSFILTER += "AND Author = '" + author_name + "'";
+		author_name = ( index == -1 ) ? "" : cbAuthor->Text;
+		UpdateConstraints ( );
 	}
 
 	private: System::Void btOwner_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
 		auto index = cbOwner->SelectedIndex;
-		if ( index == -1 )
-		{
-			DSFILTER = owner_name = "";
-			return;
-		}
-		owner_name = cbOwner->Text;
-		DSFILTER = "AND Owner = '" + owner_name + "'";
+		owner_name = ( index == -1 ) ? "" : cbOwner->Text;
+		UpdateConstraints ( );
 	}
 
 	private: System::Void btIssue_Click ( System::Object^  sender, System::EventArgs^  e )
@@ -376,7 +368,7 @@ namespace LibraryMgmt
 
 	private: System::Void btDelete_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
-
+		// TO DO
 	}
 
 	private: System::Void dgvBooks_CurrentCellChanged ( System::Object^  sender, System::EventArgs^  e )
@@ -384,10 +376,8 @@ namespace LibraryMgmt
 		if ( !dgvBooks->CurrentRow )
 			return;
 		int id = dgvBooks->CurrentRow->Index + 1;
-		if ( Convert::ToBoolean ( dgvBooks->CurrentRow->Cells[ "Available" ]->Value ) )
-			btIssue->Text = "Issue";
-		else
-			btIssue->Text = "Return";
+		btIssue->Text = ( Convert::ToBoolean ( dgvBooks->CurrentRow->Cells[ "Available" ]->Value ) ) ?
+						"Issue" : "Return";
 	}
 #undef DSFILTER
 };
