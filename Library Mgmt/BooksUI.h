@@ -109,6 +109,7 @@ namespace LibraryMgmt
 			this->dgvBooks->SelectionMode = System::Windows::Forms::DataGridViewSelectionMode::FullRowSelect;
 			this->dgvBooks->Size = System::Drawing::Size ( 891, 252 );
 			this->dgvBooks->TabIndex = 0;
+			this->dgvBooks->CellDoubleClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler ( this, &BooksUI::dgvBooks_CellDoubleClick );
 			this->dgvBooks->CurrentCellChanged += gcnew System::EventHandler ( this, &BooksUI::dgvBooks_CurrentCellChanged );
 			// 
 			// dsBooks
@@ -378,6 +379,11 @@ namespace LibraryMgmt
 		int id = dgvBooks->CurrentRow->Index + 1;
 		btIssue->Text = ( Convert::ToBoolean ( dgvBooks->CurrentRow->Cells[ "Available" ]->Value ) ) ?
 						"Issue" : "Return";
+	}
+
+	private: System::Void dgvBooks_CellDoubleClick ( System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e )
+	{
+		btIssue->PerformClick ( );
 	}
 #undef DSFILTER
 };

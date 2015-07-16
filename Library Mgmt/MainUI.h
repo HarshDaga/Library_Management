@@ -68,9 +68,9 @@ namespace LibraryMgmt {
 			// 
 			this->btFaculty->BackColor = System::Drawing::SystemColors::Control;
 			this->btFaculty->Cursor = System::Windows::Forms::Cursors::Default;
-			this->btFaculty->Location = System::Drawing::Point ( 12, 244 );
+			this->btFaculty->Location = System::Drawing::Point ( 12, 12 );
 			this->btFaculty->Name = L"btFaculty";
-			this->btFaculty->Size = System::Drawing::Size ( 140, 88 );
+			this->btFaculty->Size = System::Drawing::Size ( 193, 195 );
 			this->btFaculty->TabIndex = 0;
 			this->btFaculty->Text = L"Faculty";
 			this->btFaculty->UseVisualStyleBackColor = false;
@@ -78,9 +78,9 @@ namespace LibraryMgmt {
 			// 
 			// btBooks
 			// 
-			this->btBooks->Location = System::Drawing::Point ( 676, 244 );
+			this->btBooks->Location = System::Drawing::Point ( 211, 12 );
 			this->btBooks->Name = L"btBooks";
-			this->btBooks->Size = System::Drawing::Size ( 152, 88 );
+			this->btBooks->Size = System::Drawing::Size ( 193, 195 );
 			this->btBooks->TabIndex = 1;
 			this->btBooks->Text = L"Books";
 			this->btBooks->UseVisualStyleBackColor = false;
@@ -90,7 +90,7 @@ namespace LibraryMgmt {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF ( 6, 13 );
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size ( 840, 427 );
+			this->ClientSize = System::Drawing::Size ( 421, 225 );
 			this->Controls->Add ( this->btBooks );
 			this->Controls->Add ( this->btFaculty );
 			this->Cursor = System::Windows::Forms::Cursors::Default;
