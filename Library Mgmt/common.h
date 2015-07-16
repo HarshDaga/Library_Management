@@ -69,6 +69,16 @@ public:
 		return gcnew MySqlDataAdapter ( cmdText, connection );
 	}
 
+	//************************************
+	// Method:    insert
+	// FullName:  CDBManager::insert
+	// Access:    public static 
+	// Returns:   int	ID of the newly inserted row
+	// Qualifier:
+	// Parameter: String ^table			Table Name
+	// Parameter: String ^cols_csv		Column Names (csv)
+	// Parameter: ... array<System::Object^> ^values	Values to insert in order
+	//************************************
 	static int insert ( String ^table, String ^cols_csv, ... array<System::Object^> ^values )
 	{
 		String ^cmdText = "INSERT INTO " + table + "(" + cols_csv + ") VALUES(";
@@ -143,13 +153,13 @@ public:
 		return names;
 	}
 
-	static int findStudent ( String ^id )
+	static String^ findStudent ( String ^id )
 	{
 		auto reader = CDBManager::query ( "SELECT id FROM students WHERE id = '" + id + "'" );
 		if ( reader->Read ( ) )
-			return (int) reader->GetInt32 ( 0 );
+			return reader->GetString ( 0 );
 		else
-			return 0;
+			return nullptr;
 	}
 
 	static int findStaff ( String ^name )
@@ -188,9 +198,9 @@ public:
 			return 0;
 	}
 
-	static int addStudent ( String ^id, String ^name )
+	static String^ addStudent ( String ^id, String ^name )
 	{
-		int student_id = CLibDBManager::findStudent ( id );
+		auto student_id = CLibDBManager::findStudent ( id );
 		if ( !student_id )
 		{
 			auto cmd = CDBManager::getCmd ( "INSERT INTO students(id, name)"
@@ -198,7 +208,7 @@ public:
 			cmd->Parameters->AddWithValue ( "@id", id );
 			cmd->Parameters->AddWithValue ( "@name", name );
 			cmd->ExecuteNonQuery ( );
-			student_id = (int) cmd->LastInsertedId;
+			student_id = id;
 		}
 		return student_id;
 	}

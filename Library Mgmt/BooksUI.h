@@ -26,11 +26,11 @@ namespace LibraryMgmt
 	private: System::Windows::Forms::Button^  btDelete;
 
 	public:
-			 BooksUI ( void )
-			 {
-				 InitializeComponent ( );
-				 issueUI = gcnew IssueUI ( 0 );
-			 }
+		BooksUI ( void )
+		{
+			InitializeComponent ( );
+			issueUI = gcnew IssueUI ( 0, dgvBooks );
+		}
 
 	protected:
 		/// <summary>
@@ -260,13 +260,21 @@ namespace LibraryMgmt
 
 		}
 #pragma endregion
-	private: System::Void btReset_Click ( System::Object^  sender, System::EventArgs^  e )
+
+#define DSFILTER	dsBooks->Tables[ 0 ]->DefaultView->RowFilter
+
+	public: void refreshView ( )
 	{
 		MySqlDataAdapter ^adapter = CDBManager::getAdapter ( "SELECT * FROM view_library ORDER BY id" );
 		dsBooks->Clear ( );
 		adapter->Fill ( dsBooks );
 		dgvBooks->DataSource = dsBooks->Tables[ 0 ];
-		dsBooks->Tables[ 0 ]->DefaultView->RowFilter = "";
+	}
+
+	private: System::Void btReset_Click ( System::Object^  sender, System::EventArgs^  e )
+	{
+		refreshView ( );
+		DSFILTER = "";
 	}
 
 	private: System::Void cbAuthor_Fetch ( )
@@ -308,11 +316,11 @@ namespace LibraryMgmt
 		auto index = cbBookName->SelectedIndex;
 		if ( index == -1 )
 		{
-			dsBooks->Tables[ 0 ]->DefaultView->RowFilter = book_name = "";
+			DSFILTER = book_name = "";
 			return;
 		}
 		book_name = cbBookName->Text;
-		dsBooks->Tables[ 0 ]->DefaultView->RowFilter = "ID >= 1 AND Book = '" + book_name + "'";
+		DSFILTER = "ID >= 1 AND Book = '" + book_name + "'";
 	}
 
 	private: System::Void btAuthor_Click ( System::Object^  sender, System::EventArgs^  e )
@@ -320,11 +328,11 @@ namespace LibraryMgmt
 		auto index = cbAuthor->SelectedIndex;
 		if ( index == -1 )
 		{
-			dsBooks->Tables[ 0 ]->DefaultView->RowFilter = author_name = "";
+			DSFILTER = author_name = "";
 			return;
 		}
 		author_name = cbAuthor->Text;
-		dsBooks->Tables[ 0 ]->DefaultView->RowFilter += "AND Author = '" + author_name + "'";
+		DSFILTER += "AND Author = '" + author_name + "'";
 	}
 
 	private: System::Void btOwner_Click ( System::Object^  sender, System::EventArgs^  e )
@@ -332,19 +340,35 @@ namespace LibraryMgmt
 		auto index = cbOwner->SelectedIndex;
 		if ( index == -1 )
 		{
-			dsBooks->Tables[ 0 ]->DefaultView->RowFilter = owner_name = "";
+			DSFILTER = owner_name = "";
 			return;
 		}
 		owner_name = cbOwner->Text;
-		dsBooks->Tables[ 0 ]->DefaultView->RowFilter = "AND Owner = '" + owner_name + "'";
+		DSFILTER = "AND Owner = '" + owner_name + "'";
 	}
 
 	private: System::Void btIssue_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
 		int id = dgvBooks->CurrentRow->Index + 1;
+		if ( btIssue->Text == "Return" )
+		{
+			auto reader = CDBManager::query ( "SELECT * FROM issue_history WHERE lib_id = " + id.ToString ( ) + 
+											  " AND return_date IS NULL");
+			if ( reader->Read ( ) )
+			{
+				auto cmd = CDBManager::getCmd ( "UPDATE issue_history SET return_date = @return_date "
+												"WHERE lib_id = " + id.ToString ( ) );
+				cmd->Prepare ( );
+				cmd->Parameters->AddWithValue ( "@return_date", ( gcnew DateTime ( ) )->Now );
+				cmd->ExecuteNonQuery ( );
+			}
+			refreshView ( );
+			MessageBox::Show ( "The book has been returned." );
+			return;
+		}
 		if ( !issueUI->Visible )
 		{
-			issueUI = gcnew IssueUI ( id );
+			issueUI = gcnew IssueUI ( id, dgvBooks );
 			issueUI->Show ( );
 		}
 		issueUI->Focus ( );
@@ -365,5 +389,6 @@ namespace LibraryMgmt
 		else
 			btIssue->Text = "Return";
 	}
+#undef DSFILTER
 };
 }

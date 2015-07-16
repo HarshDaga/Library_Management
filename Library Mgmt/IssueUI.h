@@ -19,11 +19,15 @@ namespace LibraryMgmt
 	public:
 
 		int lib_id, student_id, staff_id;
+		DataGridView ^dgvBooks;
+	private: System::Windows::Forms::ErrorProvider^  errorProvider;
+	public:
 	private: System::Windows::Forms::TextBox^  tbStudentName;
 	public:
 
-		IssueUI ( int lib_id )
+		IssueUI ( int lib_id, DataGridView ^dgvBooks )
 		{
+			this->dgvBooks = dgvBooks;
 			this->lib_id = lib_id;
 			InitializeComponent ( );
 		}
@@ -43,12 +47,13 @@ namespace LibraryMgmt
 	private: System::Windows::Forms::ComboBox^  cbStaffID;
 	private: System::Windows::Forms::Button^  btStudent;
 	private: System::Windows::Forms::Button^  btStaff;
+	private: System::ComponentModel::IContainer^  components;
 
 	private:
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -57,11 +62,14 @@ namespace LibraryMgmt
 		/// </summary>
 		void InitializeComponent ( void )
 		{
+			this->components = ( gcnew System::ComponentModel::Container ( ) );
 			this->cbStudentID = ( gcnew System::Windows::Forms::ComboBox ( ) );
 			this->cbStaffID = ( gcnew System::Windows::Forms::ComboBox ( ) );
 			this->btStudent = ( gcnew System::Windows::Forms::Button ( ) );
 			this->btStaff = ( gcnew System::Windows::Forms::Button ( ) );
 			this->tbStudentName = ( gcnew System::Windows::Forms::TextBox ( ) );
+			this->errorProvider = ( gcnew System::Windows::Forms::ErrorProvider ( this->components ) );
+			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->errorProvider ) )->BeginInit ( );
 			this->SuspendLayout ( );
 			// 
 			// cbStudentID
@@ -76,6 +84,7 @@ namespace LibraryMgmt
 			this->cbStudentID->Size = System::Drawing::Size ( 272, 21 );
 			this->cbStudentID->Sorted = true;
 			this->cbStudentID->TabIndex = 6;
+			this->cbStudentID->TextChanged += gcnew System::EventHandler ( this, &IssueUI::cbStudentID_TextChanged );
 			// 
 			// cbStaffID
 			// 
@@ -118,6 +127,10 @@ namespace LibraryMgmt
 			this->tbStudentName->Size = System::Drawing::Size ( 272, 20 );
 			this->tbStudentName->TabIndex = 10;
 			// 
+			// errorProvider
+			// 
+			this->errorProvider->ContainerControl = this;
+			// 
 			// IssueUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF ( 6, 13 );
@@ -131,6 +144,7 @@ namespace LibraryMgmt
 			this->Name = L"IssueUI";
 			this->Text = L"IssueUI";
 			this->Shown += gcnew System::EventHandler ( this, &IssueUI::IssueUI_Shown );
+			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->errorProvider ) )->EndInit ( );
 			this->ResumeLayout ( false );
 			this->PerformLayout ( );
 
@@ -158,19 +172,54 @@ namespace LibraryMgmt
 		cbOwner_Fetch ( );
 	}
 
+	public: void finishIssue ( )
+	{
+		MySqlDataAdapter ^adapter = CDBManager::getAdapter ( "SELECT * FROM view_library ORDER BY id" );
+		DataSet ^dsBooks = gcnew DataSet ( );
+		dsBooks->BeginInit ( );
+		dsBooks->Clear ( );
+		adapter->Fill ( dsBooks );
+		dgvBooks->DataSource = dsBooks->Tables[ 0 ];
+		MessageBox::Show ( "Succesfully issued." );
+	}
+
 	private: System::Void btStudent_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
+		errorProvider->Clear ( );
 		String ^student_id = cbStudentID->Text;
 		if ( !cbStudentID->Items->Contains ( student_id ) )
 		{
+			String ^student_name = tbStudentName->Text;
+			if ( String::IsNullOrEmpty ( student_id ) )
+			{
+				errorProvider->SetError ( cbStudentID, "Cannot be blank." );
+				return;
+			}
+			if ( String::IsNullOrEmpty ( student_name ) )
+			{
+				errorProvider->SetError ( tbStudentName, "Cannot be blank." );
+				return;
+			}
+			CLibDBManager::addStudent ( student_id, student_name );
 		}
 		CDBManager::insert ( "issue_history", "lib_id, student_id, issue_date",
 							 lib_id, student_id, ( gcnew DateTime ( ) )->Now );
+		finishIssue ( );
 	}
 
 	private: System::Void btStaff_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
-
+		String ^name = cbStaffID->Text;
+		int staff_id = CLibDBManager::addStaff ( name );
+		CDBManager::insert ( "issue_history", "lib_id, staff_id, issue_date",
+							 lib_id, staff_id, ( gcnew DateTime ( ) )->Now );
+		finishIssue ( );
 	}
-	};
+
+	private: System::Void cbStudentID_TextChanged ( System::Object^  sender, System::EventArgs^  e )
+	{
+		String ^student_id = cbStudentID->Text;
+		tbStudentName->Enabled = !cbStudentID->Items->Contains ( student_id );
+	}
+};
 }
