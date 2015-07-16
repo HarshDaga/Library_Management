@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-07-16 18:17:14
+Date: 2015-07-16 22:47:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -387,25 +387,54 @@ CREATE TABLE `students` (
 -- ----------------------------
 -- Records of students
 -- ----------------------------
+INSERT INTO `students` VALUES ('13102A0001', 'Ajinkya Gawali');
+INSERT INTO `students` VALUES ('13106B0030', 'Aravind Damisetti');
 INSERT INTO `students` VALUES ('13106B0033', 'Harsh Daga');
+
+-- ----------------------------
+-- View structure for view_issue_history
+-- ----------------------------
+DROP VIEW IF EXISTS `view_issue_history`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER  VIEW `view_issue_history` AS SELECT
+	issue_history.id AS ID,
+	books.`name` AS Book,
+	`authors`.`name` AS Author,
+	staff.`name` AS `Owner`,
+	students.`name` AS Student,
+	staff_issue.`name` AS Staff,
+	issue_history.issue_date AS Issue_Date,
+	issue_history.return_date AS Return_Date
+FROM
+	issue_history
+INNER JOIN library ON issue_history.lib_id = library.id
+INNER JOIN books ON library.book_id = books.id
+INNER JOIN `authors` ON library.author_id = `authors`.id
+INNER JOIN staff ON issue_history.lib_id = library.id
+AND library.owner_id = staff.id
+LEFT JOIN students ON issue_history.student_id = students.id
+LEFT JOIN staff AS staff_issue ON issue_history.staff_id = staff_issue.id
+ORDER BY
+	ID ASC ;
 
 -- ----------------------------
 -- View structure for view_library
 -- ----------------------------
 DROP VIEW IF EXISTS `view_library`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER  VIEW `view_library` AS SELECT
-library.id AS ID,
-books.`name` AS Book,
-`authors`.`name` AS Author,
-categories.`name` AS Category,
-staff.`name` AS `Owner`,
-library.available AS Available
+	library.id AS ID,
+	books.`name` AS Book,
+	`authors`.`name` AS Author,
+	categories.`name` AS Category,
+	staff.`name` AS `Owner`,
+	library.available AS Available
 FROM
-library
+	library
 INNER JOIN staff ON library.owner_id = staff.id
 INNER JOIN books ON library.book_id = books.id
 INNER JOIN categories ON library.category_id = categories.id
-INNER JOIN `authors` ON library.author_id = `authors`.id ;
+INNER JOIN `authors` ON library.author_id = `authors`.id
+ORDER BY
+	ID ASC ;
 DROP TRIGGER IF EXISTS `Book_Issued`;
 DELIMITER ;;
 CREATE TRIGGER `Book_Issued` AFTER INSERT ON `issue_history` FOR EACH ROW UPDATE dept_library.library
@@ -418,5 +447,12 @@ DELIMITER ;;
 CREATE TRIGGER `Book_Returned` AFTER UPDATE ON `issue_history` FOR EACH ROW UPDATE dept_library.library
 SET available = 1
 WHERE library.id = new.lib_id
+;;
+DELIMITER ;
+DROP TRIGGER IF EXISTS `Row_Deleted`;
+DELIMITER ;;
+CREATE TRIGGER `Row_Deleted` AFTER DELETE ON `issue_history` FOR EACH ROW UPDATE dept_library.library
+SET available = 1
+WHERE library.id = old.lib_id
 ;;
 DELIMITER ;
