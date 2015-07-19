@@ -58,6 +58,10 @@
       <AdditionalDependencies />
       <SubSystem>Windows</SubSystem>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -68,6 +72,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies />
     </Link>
+    <Xdcmake>
+      <SuppressStartupBanner>false</SuppressStartupBanner>
+    </Xdcmake>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Reference Include="MySql.Data, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d" />
@@ -82,10 +89,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BooksUI.cpp" />
-    <ClCompile Include="FacultyUI.cpp" />
-    <ClCompile Include="IssueUI.cpp" />
-    <ClCompile Include="MainUI.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -94,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="common.h" />
     <ClInclude Include="FacultyUI.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="IssueHistoryUI.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="IssueUI.h">
@@ -110,12 +116,18 @@
     <EmbeddedResource Include="FacultyUI.resx">
       <DependentUpon>FacultyUI.h</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="IssueHistoryUI.resx">
+      <DependentUpon>IssueHistoryUI.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="IssueUI.resx">
       <DependentUpon>IssueUI.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainUI.resx">
       <DependentUpon>MainUI.h</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

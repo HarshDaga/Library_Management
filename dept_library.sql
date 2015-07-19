@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-07-16 22:47:35
+Date: 2015-07-19 22:52:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -124,7 +124,7 @@ INSERT INTO `books` VALUES ('2', 'C++(For Beginners..Masters)');
 INSERT INTO `books` VALUES ('3', 'Cloud Computing');
 INSERT INTO `books` VALUES ('4', 'Compiler Design');
 INSERT INTO `books` VALUES ('5', 'Computer Graphics');
-INSERT INTO `books` VALUES ('6', 'Computer Graphics &Virtual Reality');
+INSERT INTO `books` VALUES ('6', 'Computer Graphics & Virtual Reality');
 INSERT INTO `books` VALUES ('7', 'Computer Network');
 INSERT INTO `books` VALUES ('8', 'Computer Organisation & Architechture');
 INSERT INTO `books` VALUES ('9', 'Computer Programming - I');
@@ -414,7 +414,7 @@ AND library.owner_id = staff.id
 LEFT JOIN students ON issue_history.student_id = students.id
 LEFT JOIN staff AS staff_issue ON issue_history.staff_id = staff_issue.id
 ORDER BY
-	ID ASC ;
+Issue_Date DESC ;
 
 -- ----------------------------
 -- View structure for view_library
@@ -434,12 +434,13 @@ INNER JOIN books ON library.book_id = books.id
 INNER JOIN categories ON library.category_id = categories.id
 INNER JOIN `authors` ON library.author_id = `authors`.id
 ORDER BY
-	ID ASC ;
+	ID ASC ; ;
 DROP TRIGGER IF EXISTS `Book_Issued`;
 DELIMITER ;;
 CREATE TRIGGER `Book_Issued` AFTER INSERT ON `issue_history` FOR EACH ROW UPDATE dept_library.library
 SET available = 0
 WHERE library.id = new.lib_id
+;
 ;;
 DELIMITER ;
 DROP TRIGGER IF EXISTS `Book_Returned`;
@@ -447,6 +448,7 @@ DELIMITER ;;
 CREATE TRIGGER `Book_Returned` AFTER UPDATE ON `issue_history` FOR EACH ROW UPDATE dept_library.library
 SET available = 1
 WHERE library.id = new.lib_id
+;
 ;;
 DELIMITER ;
 DROP TRIGGER IF EXISTS `Row_Deleted`;

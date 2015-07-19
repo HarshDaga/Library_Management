@@ -25,7 +25,9 @@ public:
 
 	void init ( )
 	{
-		connection = gcnew MySqlConnection ( L"server=localhost;user id=dept_lib_admin;password=123456;persistsecurityinfo=True;database=dept_library;table cache=true" );
+		StreamReader ^din = File::OpenText ( "connection.ini" );
+		String ^conn = din->ReadToEnd ( )->Replace ( "\n", ";" );
+		connection = gcnew MySqlConnection ( conn + ";persistsecurityinfo=True;table cache=true" );
 		connection->Open ( );
 	}
 
@@ -153,9 +155,9 @@ public:
 		return names;
 	}
 
-	static String^ findStudent ( String ^id )
+	static String^ findStudent ( String ^id, bool get_name )
 	{
-		auto reader = CDBManager::query ( "SELECT id FROM students WHERE id = '" + id + "'" );
+		auto reader = CDBManager::query ( "SELECT " + ( get_name ? "name" : "id" ) + " FROM students WHERE id = '" + id + "'" );
 		if ( reader->Read ( ) )
 			return reader->GetString ( 0 );
 		else
@@ -200,7 +202,7 @@ public:
 
 	static String^ addStudent ( String ^id, String ^name )
 	{
-		auto student_id = CLibDBManager::findStudent ( id );
+		auto student_id = CLibDBManager::findStudent ( id, false );
 		if ( !student_id )
 		{
 			auto cmd = CDBManager::getCmd ( "INSERT INTO students(id, name)"

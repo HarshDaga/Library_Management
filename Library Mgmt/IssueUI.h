@@ -17,16 +17,13 @@ namespace LibraryMgmt
 	public ref class IssueUI : public System::Windows::Forms::Form
 	{
 	public:
-
 		int lib_id, student_id, staff_id;
 		DataGridView ^dgvBooks;
 	private: System::Windows::Forms::ErrorProvider^  errorProvider;
-	private: System::Windows::Forms::GroupBox^  groupBox2;
-	private: System::Windows::Forms::GroupBox^  groupBox1;
-	public:
+	private: System::Windows::Forms::GroupBox^  gbStaff;
+	private: System::Windows::Forms::GroupBox^  gbStudents;
 	private: System::Windows::Forms::TextBox^  tbStudentName;
 	public:
-
 		IssueUI ( int lib_id, DataGridView ^dgvBooks )
 		{
 			this->dgvBooks = dgvBooks;
@@ -71,11 +68,11 @@ namespace LibraryMgmt
 			this->btStaff = ( gcnew System::Windows::Forms::Button ( ) );
 			this->tbStudentName = ( gcnew System::Windows::Forms::TextBox ( ) );
 			this->errorProvider = ( gcnew System::Windows::Forms::ErrorProvider ( this->components ) );
-			this->groupBox1 = ( gcnew System::Windows::Forms::GroupBox ( ) );
-			this->groupBox2 = ( gcnew System::Windows::Forms::GroupBox ( ) );
+			this->gbStudents = ( gcnew System::Windows::Forms::GroupBox ( ) );
+			this->gbStaff = ( gcnew System::Windows::Forms::GroupBox ( ) );
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->errorProvider ) )->BeginInit ( );
-			this->groupBox1->SuspendLayout ( );
-			this->groupBox2->SuspendLayout ( );
+			this->gbStudents->SuspendLayout ( );
+			this->gbStaff->SuspendLayout ( );
 			this->SuspendLayout ( );
 			// 
 			// cbStudentID
@@ -83,6 +80,7 @@ namespace LibraryMgmt
 			this->cbStudentID->AllowDrop = true;
 			this->cbStudentID->AutoCompleteMode = System::Windows::Forms::AutoCompleteMode::SuggestAppend;
 			this->cbStudentID->AutoCompleteSource = System::Windows::Forms::AutoCompleteSource::ListItems;
+			this->cbStudentID->BackColor = System::Drawing::SystemColors::ControlLightLight;
 			this->cbStudentID->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 8.25F ) );
 			this->cbStudentID->FormattingEnabled = true;
 			this->cbStudentID->Location = System::Drawing::Point ( 6, 99 );
@@ -97,6 +95,7 @@ namespace LibraryMgmt
 			this->cbStaffID->AllowDrop = true;
 			this->cbStaffID->AutoCompleteMode = System::Windows::Forms::AutoCompleteMode::SuggestAppend;
 			this->cbStaffID->AutoCompleteSource = System::Windows::Forms::AutoCompleteSource::ListItems;
+			this->cbStaffID->BackColor = System::Drawing::SystemColors::ControlLightLight;
 			this->cbStaffID->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 8.25F ) );
 			this->cbStaffID->FormattingEnabled = true;
 			this->cbStaffID->Location = System::Drawing::Point ( 6, 99 );
@@ -107,73 +106,90 @@ namespace LibraryMgmt
 			// 
 			// btStudent
 			// 
+			this->btStudent->BackColor = System::Drawing::SystemColors::ControlDark;
+			this->btStudent->FlatAppearance->BorderSize = 0;
+			this->btStudent->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btStudent->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>( 0 ) ) );
 			this->btStudent->Location = System::Drawing::Point ( 52, 164 );
 			this->btStudent->Name = L"btStudent";
 			this->btStudent->Size = System::Drawing::Size ( 181, 69 );
 			this->btStudent->TabIndex = 8;
 			this->btStudent->Text = L"Student";
-			this->btStudent->UseVisualStyleBackColor = true;
+			this->btStudent->UseVisualStyleBackColor = false;
 			this->btStudent->Click += gcnew System::EventHandler ( this, &IssueUI::btStudent_Click );
 			// 
 			// btStaff
 			// 
+			this->btStaff->BackColor = System::Drawing::SystemColors::ControlDark;
+			this->btStaff->FlatAppearance->BorderSize = 0;
+			this->btStaff->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btStaff->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>( 0 ) ) );
 			this->btStaff->Location = System::Drawing::Point ( 56, 164 );
 			this->btStaff->Name = L"btStaff";
 			this->btStaff->Size = System::Drawing::Size ( 181, 69 );
 			this->btStaff->TabIndex = 10;
 			this->btStaff->Text = L"Professor";
-			this->btStaff->UseVisualStyleBackColor = true;
+			this->btStaff->UseVisualStyleBackColor = false;
 			this->btStaff->Click += gcnew System::EventHandler ( this, &IssueUI::btStaff_Click );
 			// 
 			// tbStudentName
 			// 
+			this->tbStudentName->BackColor = System::Drawing::SystemColors::ControlLightLight;
 			this->tbStudentName->Enabled = false;
 			this->tbStudentName->Location = System::Drawing::Point ( 6, 47 );
 			this->tbStudentName->Name = L"tbStudentName";
-			this->tbStudentName->Size = System::Drawing::Size ( 272, 20 );
+			this->tbStudentName->Size = System::Drawing::Size ( 272, 26 );
 			this->tbStudentName->TabIndex = 7;
 			// 
 			// errorProvider
 			// 
 			this->errorProvider->ContainerControl = this;
 			// 
-			// groupBox1
+			// gbStudents
 			// 
-			this->groupBox1->Controls->Add ( this->btStudent );
-			this->groupBox1->Controls->Add ( this->tbStudentName );
-			this->groupBox1->Controls->Add ( this->cbStudentID );
-			this->groupBox1->Location = System::Drawing::Point ( 12, 12 );
-			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size ( 286, 311 );
-			this->groupBox1->TabIndex = 11;
-			this->groupBox1->TabStop = false;
-			this->groupBox1->Text = L"Student";
+			this->gbStudents->Controls->Add ( this->btStudent );
+			this->gbStudents->Controls->Add ( this->tbStudentName );
+			this->gbStudents->Controls->Add ( this->cbStudentID );
+			this->gbStudents->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>( 0 ) ) );
+			this->gbStudents->Location = System::Drawing::Point ( 12, 12 );
+			this->gbStudents->Name = L"gbStudents";
+			this->gbStudents->Size = System::Drawing::Size ( 286, 311 );
+			this->gbStudents->TabIndex = 11;
+			this->gbStudents->TabStop = false;
+			this->gbStudents->Text = L"Student";
 			// 
-			// groupBox2
+			// gbStaff
 			// 
-			this->groupBox2->Controls->Add ( this->btStaff );
-			this->groupBox2->Controls->Add ( this->cbStaffID );
-			this->groupBox2->Location = System::Drawing::Point ( 304, 12 );
-			this->groupBox2->Name = L"groupBox2";
-			this->groupBox2->Size = System::Drawing::Size ( 286, 311 );
-			this->groupBox2->TabIndex = 12;
-			this->groupBox2->TabStop = false;
-			this->groupBox2->Text = L"Staff";
+			this->gbStaff->Controls->Add ( this->btStaff );
+			this->gbStaff->Controls->Add ( this->cbStaffID );
+			this->gbStaff->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>( 0 ) ) );
+			this->gbStaff->Location = System::Drawing::Point ( 304, 12 );
+			this->gbStaff->Name = L"gbStaff";
+			this->gbStaff->RightToLeft = System::Windows::Forms::RightToLeft::No;
+			this->gbStaff->Size = System::Drawing::Size ( 286, 311 );
+			this->gbStaff->TabIndex = 12;
+			this->gbStaff->TabStop = false;
+			this->gbStaff->Text = L"Staff";
 			// 
 			// IssueUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF ( 6, 13 );
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->BackColor = System::Drawing::SystemColors::ControlDarkDark;
 			this->ClientSize = System::Drawing::Size ( 597, 332 );
-			this->Controls->Add ( this->groupBox2 );
-			this->Controls->Add ( this->groupBox1 );
+			this->Controls->Add ( this->gbStaff );
+			this->Controls->Add ( this->gbStudents );
 			this->Name = L"IssueUI";
-			this->Text = L"IssueUI";
+			this->Text = L"Issue";
 			this->Shown += gcnew System::EventHandler ( this, &IssueUI::IssueUI_Shown );
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->errorProvider ) )->EndInit ( );
-			this->groupBox1->ResumeLayout ( false );
-			this->groupBox1->PerformLayout ( );
-			this->groupBox2->ResumeLayout ( false );
+			this->gbStudents->ResumeLayout ( false );
+			this->gbStudents->PerformLayout ( );
+			this->gbStaff->ResumeLayout ( false );
 			this->ResumeLayout ( false );
 
 		}
@@ -207,8 +223,16 @@ namespace LibraryMgmt
 		dsBooks->BeginInit ( );
 		dsBooks->Clear ( );
 		adapter->Fill ( dsBooks );
-		dgvBooks->DataSource = dsBooks->Tables[ 0 ];
-		MessageBox::Show ( "Succesfully issued." );
+		auto table = dsBooks->Tables[ 0 ];
+		if ( !table->Columns->Contains ( "Status" ) )
+		{
+			table->Columns->Add ( "Status" );
+			table->Columns[ "Status" ]->Expression = "IIF(Available=1, 'Available', 'Issued')";
+		}
+		dgvBooks->DataSource = table;
+		MessageBox::Show ( "Succesfully issued.", "Issued",
+						   MessageBoxButtons::OK, MessageBoxIcon::Asterisk );
+		this->Close ( );
 	}
 
 	private: System::Void btStudent_Click ( System::Object^  sender, System::EventArgs^  e )
@@ -248,6 +272,8 @@ namespace LibraryMgmt
 	{
 		String ^student_id = cbStudentID->Text;
 		tbStudentName->Enabled = !cbStudentID->Items->Contains ( student_id );
+		if ( !tbStudentName->Enabled )
+			tbStudentName->Text = CLibDBManager::findStudent ( student_id, true );
 	}
 };
 }

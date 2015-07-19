@@ -1,6 +1,7 @@
 #pragma once
 #include "FacultyUI.h"
 #include "BooksUI.h"
+#include "IssueHistoryUI.h"
 #include "common.h"
 
 namespace LibraryMgmt {
@@ -18,15 +19,42 @@ namespace LibraryMgmt {
 	public ref class MainUI : public System::Windows::Forms::Form
 	{
 	public:
-
 		FacultyUI ^facUI;
 		BooksUI ^booksUI;
-
+		IssueHistoryUI ^issueHistoryUI;
+	private: System::Windows::Forms::StatusStrip^  statusStrip;
+	private: System::Windows::Forms::ToolStripStatusLabel^  slblStatus;
+	private: System::Windows::Forms::Button^  btHistory;
+	private: System::Windows::Forms::ToolStripStatusLabel^  slblConnected;
+	public:
 		MainUI(void)
 		{
 			InitializeComponent();
+			try
+			{
+				CDBManager::CDBManager ( );
+			}
+			catch ( MySql::Data::MySqlClient::MySqlException ^e )
+			{
+				slblConnected->ForeColor = System::Drawing::Color::DarkRed;
+				slblConnected->Text = e->InnerException->Message;
+				btBooks->Enabled = false;
+				btFaculty->Enabled = false;
+				btHistory->Enabled = false;
+				return;
+			}
+			catch ( System::IO::FileNotFoundException ^e )
+			{
+				slblConnected->ForeColor = System::Drawing::Color::DarkRed;
+				slblConnected->Text = e->Message;
+				btBooks->Enabled = false;
+				btFaculty->Enabled = false;
+				btHistory->Enabled = false;
+				return;
+			}
 			facUI = gcnew FacultyUI ( );
 			booksUI = gcnew BooksUI ( );
+			issueHistoryUI = gcnew IssueHistoryUI ( );
 		}
 
 	protected:
@@ -42,11 +70,6 @@ namespace LibraryMgmt {
 		}
 	private: System::Windows::Forms::Button^  btFaculty;
 	private: System::Windows::Forms::Button^  btBooks;
-	protected:
-
-	protected:
-
-
 	private:
 		/// <summary>
 		/// Required designer variable.
@@ -62,15 +85,24 @@ namespace LibraryMgmt {
 		{
 			this->btFaculty = ( gcnew System::Windows::Forms::Button ( ) );
 			this->btBooks = ( gcnew System::Windows::Forms::Button ( ) );
+			this->statusStrip = ( gcnew System::Windows::Forms::StatusStrip ( ) );
+			this->slblStatus = ( gcnew System::Windows::Forms::ToolStripStatusLabel ( ) );
+			this->slblConnected = ( gcnew System::Windows::Forms::ToolStripStatusLabel ( ) );
+			this->btHistory = ( gcnew System::Windows::Forms::Button ( ) );
+			this->statusStrip->SuspendLayout ( );
 			this->SuspendLayout ( );
 			// 
 			// btFaculty
 			// 
-			this->btFaculty->BackColor = System::Drawing::SystemColors::Control;
+			this->btFaculty->BackColor = System::Drawing::SystemColors::ControlDark;
 			this->btFaculty->Cursor = System::Windows::Forms::Cursors::Default;
+			this->btFaculty->FlatAppearance->BorderSize = 0;
+			this->btFaculty->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btFaculty->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>( 0 ) ) );
 			this->btFaculty->Location = System::Drawing::Point ( 12, 12 );
 			this->btFaculty->Name = L"btFaculty";
-			this->btFaculty->Size = System::Drawing::Size ( 193, 195 );
+			this->btFaculty->Size = System::Drawing::Size ( 237, 242 );
 			this->btFaculty->TabIndex = 0;
 			this->btFaculty->Text = L"Faculty";
 			this->btFaculty->UseVisualStyleBackColor = false;
@@ -78,26 +110,80 @@ namespace LibraryMgmt {
 			// 
 			// btBooks
 			// 
-			this->btBooks->Location = System::Drawing::Point ( 211, 12 );
+			this->btBooks->BackColor = System::Drawing::SystemColors::ControlDark;
+			this->btBooks->FlatAppearance->BorderSize = 0;
+			this->btBooks->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btBooks->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>( 0 ) ) );
+			this->btBooks->Location = System::Drawing::Point ( 255, 12 );
 			this->btBooks->Name = L"btBooks";
-			this->btBooks->Size = System::Drawing::Size ( 193, 195 );
+			this->btBooks->Size = System::Drawing::Size ( 237, 242 );
 			this->btBooks->TabIndex = 1;
 			this->btBooks->Text = L"Books";
 			this->btBooks->UseVisualStyleBackColor = false;
 			this->btBooks->Click += gcnew System::EventHandler ( this, &MainUI::btBooks_Click );
 			// 
+			// statusStrip
+			// 
+			this->statusStrip->BackColor = System::Drawing::SystemColors::ControlDarkDark;
+			this->statusStrip->Items->AddRange ( gcnew cli::array< System::Windows::Forms::ToolStripItem^  > ( 2 ) { this->slblStatus, this->slblConnected } );
+			this->statusStrip->Location = System::Drawing::Point ( 0, 257 );
+			this->statusStrip->Name = L"statusStrip";
+			this->statusStrip->Size = System::Drawing::Size ( 747, 22 );
+			this->statusStrip->TabIndex = 2;
+			this->statusStrip->Text = L"statusStrip";
+			// 
+			// slblStatus
+			// 
+			this->slblStatus->DisplayStyle = System::Windows::Forms::ToolStripItemDisplayStyle::Text;
+			this->slblStatus->Font = ( gcnew System::Drawing::Font ( L"Segoe UI", 9 ) );
+			this->slblStatus->Name = L"slblStatus";
+			this->slblStatus->Size = System::Drawing::Size ( 42, 17 );
+			this->slblStatus->Text = L"Status:";
+			// 
+			// slblConnected
+			// 
+			this->slblConnected->DisplayStyle = System::Windows::Forms::ToolStripItemDisplayStyle::Text;
+			this->slblConnected->Font = ( gcnew System::Drawing::Font ( L"Segoe UI", 9 ) );
+			this->slblConnected->ForeColor = System::Drawing::Color::Lime;
+			this->slblConnected->Name = L"slblConnected";
+			this->slblConnected->Size = System::Drawing::Size ( 65, 17 );
+			this->slblConnected->Text = L"Connected";
+			this->slblConnected->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			// 
+			// btHistory
+			// 
+			this->btHistory->BackColor = System::Drawing::SystemColors::ControlDark;
+			this->btHistory->FlatAppearance->BorderSize = 0;
+			this->btHistory->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btHistory->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>( 0 ) ) );
+			this->btHistory->Location = System::Drawing::Point ( 498, 12 );
+			this->btHistory->Name = L"btHistory";
+			this->btHistory->Size = System::Drawing::Size ( 237, 242 );
+			this->btHistory->TabIndex = 3;
+			this->btHistory->Text = L"Issue History";
+			this->btHistory->UseVisualStyleBackColor = false;
+			this->btHistory->Click += gcnew System::EventHandler ( this, &MainUI::btHistory_Click );
+			// 
 			// MainUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF ( 6, 13 );
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size ( 421, 225 );
+			this->BackColor = System::Drawing::SystemColors::ControlDarkDark;
+			this->ClientSize = System::Drawing::Size ( 747, 279 );
+			this->Controls->Add ( this->btHistory );
+			this->Controls->Add ( this->statusStrip );
 			this->Controls->Add ( this->btBooks );
 			this->Controls->Add ( this->btFaculty );
 			this->Cursor = System::Windows::Forms::Cursors::Default;
 			this->Name = L"MainUI";
 			this->RightToLeft = System::Windows::Forms::RightToLeft::No;
 			this->Text = L"Library Management";
+			this->statusStrip->ResumeLayout ( false );
+			this->statusStrip->PerformLayout ( );
 			this->ResumeLayout ( false );
+			this->PerformLayout ( );
 
 		}
 #pragma endregion
@@ -120,5 +206,15 @@ namespace LibraryMgmt {
 		}
 		booksUI->Focus ( );
 	}
-	};
+
+	private: System::Void btHistory_Click ( System::Object^  sender, System::EventArgs^  e )
+	{
+		if ( !issueHistoryUI->Visible )
+		{
+			issueHistoryUI = gcnew IssueHistoryUI ( );
+			issueHistoryUI->Show ( );
+		}
+		issueHistoryUI->Focus ( );
+	}
+};
 }

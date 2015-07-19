@@ -16,7 +16,6 @@ namespace LibraryMgmt
 	/// </summary>
 	public ref class FacultyUI : public System::Windows::Forms::Form
 	{
-
 	public:
 		FacultyUI ( void )
 		{
@@ -73,6 +72,7 @@ namespace LibraryMgmt
 		void InitializeComponent ( void )
 		{
 			this->components = ( gcnew System::ComponentModel::Container ( ) );
+			System::ComponentModel::ComponentResourceManager^  resources = ( gcnew System::ComponentModel::ComponentResourceManager ( FacultyUI::typeid ) );
 			this->errorProvider = ( gcnew System::Windows::Forms::ErrorProvider ( this->components ) );
 			this->cbAuthor = ( gcnew System::Windows::Forms::ComboBox ( ) );
 			this->lblBookName = ( gcnew System::Windows::Forms::Label ( ) );
@@ -96,10 +96,11 @@ namespace LibraryMgmt
 			// 
 			this->cbAuthor->AutoCompleteMode = System::Windows::Forms::AutoCompleteMode::SuggestAppend;
 			this->cbAuthor->AutoCompleteSource = System::Windows::Forms::AutoCompleteSource::ListItems;
+			this->cbAuthor->BackColor = System::Drawing::SystemColors::ControlLightLight;
 			this->cbAuthor->FormattingEnabled = true;
 			this->cbAuthor->Location = System::Drawing::Point ( 303, 111 );
 			this->cbAuthor->Name = L"cbAuthor";
-			this->cbAuthor->Size = System::Drawing::Size ( 170, 21 );
+			this->cbAuthor->Size = System::Drawing::Size ( 170, 28 );
 			this->cbAuthor->Sorted = true;
 			this->cbAuthor->TabIndex = 8;
 			// 
@@ -140,10 +141,11 @@ namespace LibraryMgmt
 			// 
 			this->cbCategory->AutoCompleteMode = System::Windows::Forms::AutoCompleteMode::SuggestAppend;
 			this->cbCategory->AutoCompleteSource = System::Windows::Forms::AutoCompleteSource::ListItems;
+			this->cbCategory->BackColor = System::Drawing::SystemColors::ControlLightLight;
 			this->cbCategory->FormattingEnabled = true;
 			this->cbCategory->Location = System::Drawing::Point ( 479, 111 );
 			this->cbCategory->Name = L"cbCategory";
-			this->cbCategory->Size = System::Drawing::Size ( 173, 21 );
+			this->cbCategory->Size = System::Drawing::Size ( 173, 28 );
 			this->cbCategory->Sorted = true;
 			this->cbCategory->TabIndex = 11;
 			// 
@@ -162,22 +164,27 @@ namespace LibraryMgmt
 			// 
 			this->cbOwner->AutoCompleteMode = System::Windows::Forms::AutoCompleteMode::SuggestAppend;
 			this->cbOwner->AutoCompleteSource = System::Windows::Forms::AutoCompleteSource::ListItems;
+			this->cbOwner->BackColor = System::Drawing::SystemColors::ControlLightLight;
 			this->cbOwner->FormattingEnabled = true;
 			this->cbOwner->Location = System::Drawing::Point ( 658, 111 );
 			this->cbOwner->Name = L"cbOwner";
-			this->cbOwner->Size = System::Drawing::Size ( 157, 21 );
+			this->cbOwner->Size = System::Drawing::Size ( 157, 28 );
 			this->cbOwner->Sorted = true;
 			this->cbOwner->TabIndex = 13;
 			// 
 			// btAddBook
 			// 
-			this->btAddBook->Font = ( gcnew System::Drawing::Font ( L"Consolas", 16 ) );
-			this->btAddBook->Location = System::Drawing::Point ( 27, 138 );
+			this->btAddBook->BackColor = System::Drawing::SystemColors::ControlDark;
+			this->btAddBook->FlatAppearance->BorderSize = 0;
+			this->btAddBook->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btAddBook->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>( 0 ) ) );
+			this->btAddBook->Location = System::Drawing::Point ( 27, 145 );
 			this->btAddBook->Name = L"btAddBook";
 			this->btAddBook->Size = System::Drawing::Size ( 788, 50 );
 			this->btAddBook->TabIndex = 15;
 			this->btAddBook->Text = L"Add";
-			this->btAddBook->UseVisualStyleBackColor = true;
+			this->btAddBook->UseVisualStyleBackColor = false;
 			this->btAddBook->Click += gcnew System::EventHandler ( this, &FacultyUI::btAddBook_Click );
 			// 
 			// gbAddBook
@@ -191,6 +198,8 @@ namespace LibraryMgmt
 			this->gbAddBook->Controls->Add ( this->lblCategory );
 			this->gbAddBook->Controls->Add ( this->lblAuthor );
 			this->gbAddBook->Controls->Add ( this->cbCategory );
+			this->gbAddBook->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>( 0 ) ) );
 			this->gbAddBook->Location = System::Drawing::Point ( 12, 13 );
 			this->gbAddBook->Name = L"gbAddBook";
 			this->gbAddBook->Size = System::Drawing::Size ( 854, 353 );
@@ -203,10 +212,11 @@ namespace LibraryMgmt
 			this->cbBookName->AllowDrop = true;
 			this->cbBookName->AutoCompleteMode = System::Windows::Forms::AutoCompleteMode::SuggestAppend;
 			this->cbBookName->AutoCompleteSource = System::Windows::Forms::AutoCompleteSource::ListItems;
+			this->cbBookName->BackColor = System::Drawing::SystemColors::ControlLightLight;
 			this->cbBookName->FormattingEnabled = true;
 			this->cbBookName->Location = System::Drawing::Point ( 27, 111 );
 			this->cbBookName->Name = L"cbBookName";
-			this->cbBookName->Size = System::Drawing::Size ( 270, 21 );
+			this->cbBookName->Size = System::Drawing::Size ( 270, 28 );
 			this->cbBookName->Sorted = true;
 			this->cbBookName->TabIndex = 16;
 			// 
@@ -215,10 +225,12 @@ namespace LibraryMgmt
 			this->AutoScaleDimensions = System::Drawing::SizeF ( 6, 13 );
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoSize = true;
+			this->BackColor = System::Drawing::SystemColors::ControlDarkDark;
 			this->ClientSize = System::Drawing::Size ( 878, 378 );
 			this->Controls->Add ( this->gbAddBook );
+			this->Icon = ( cli::safe_cast<System::Drawing::Icon^>( resources->GetObject ( L"$this.Icon" ) ) );
 			this->Name = L"FacultyUI";
-			this->Text = L"FacultyUI";
+			this->Text = L"Faculty";
 			this->Shown += gcnew System::EventHandler ( this, &FacultyUI::FacultyUI_Shown );
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->errorProvider ) )->EndInit ( );
 			this->gbAddBook->ResumeLayout ( false );

@@ -9,7 +9,6 @@ int WINAPI WinMain ( HINSTANCE hInstance,
 					 LPSTR lpCmdLine,
 					 int nCmdShow )
 {
-	CDBManager::CDBManager ( );
 	Application::EnableVisualStyles ( );
 	Application::SetCompatibleTextRenderingDefault ( false );
 	Application::Run ( gcnew MainUI ( ) );

@@ -17,14 +17,11 @@ namespace LibraryMgmt
 	/// </summary>
 	public ref class BooksUI : public System::Windows::Forms::Form
 	{
-
 	public:
 		String ^book_name, ^author_name, ^owner_name;
 		IssueUI ^issueUI;
 	private: System::Windows::Forms::Button^  btIssue;
-
 	private: System::Windows::Forms::Button^  btDelete;
-
 	public:
 		BooksUI ( void )
 		{
@@ -78,6 +75,9 @@ namespace LibraryMgmt
 		/// </summary>
 		void InitializeComponent ( void )
 		{
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle1 = ( gcnew System::Windows::Forms::DataGridViewCellStyle ( ) );
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle2 = ( gcnew System::Windows::Forms::DataGridViewCellStyle ( ) );
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle3 = ( gcnew System::Windows::Forms::DataGridViewCellStyle ( ) );
 			this->dgvBooks = ( gcnew System::Windows::Forms::DataGridView ( ) );
 			this->dsBooks = ( gcnew System::Data::DataSet ( ) );
 			this->btReset = ( gcnew System::Windows::Forms::Button ( ) );
@@ -100,12 +100,44 @@ namespace LibraryMgmt
 			this->dgvBooks->AllowUserToAddRows = false;
 			this->dgvBooks->AllowUserToDeleteRows = false;
 			this->dgvBooks->AllowUserToOrderColumns = true;
+			this->dgvBooks->AllowUserToResizeRows = false;
+			this->dgvBooks->AutoSizeColumnsMode = System::Windows::Forms::DataGridViewAutoSizeColumnsMode::AllCells;
+			this->dgvBooks->BackgroundColor = System::Drawing::SystemColors::ControlDark;
+			this->dgvBooks->CellBorderStyle = System::Windows::Forms::DataGridViewCellBorderStyle::Raised;
+			dataGridViewCellStyle1->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
+			dataGridViewCellStyle1->BackColor = System::Drawing::SystemColors::ControlLight;
+			dataGridViewCellStyle1->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>( 0 ) ) );
+			dataGridViewCellStyle1->ForeColor = System::Drawing::SystemColors::WindowText;
+			dataGridViewCellStyle1->SelectionBackColor = System::Drawing::SystemColors::Highlight;
+			dataGridViewCellStyle1->SelectionForeColor = System::Drawing::SystemColors::HighlightText;
+			dataGridViewCellStyle1->WrapMode = System::Windows::Forms::DataGridViewTriState::True;
+			this->dgvBooks->ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			this->dgvBooks->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			dataGridViewCellStyle2->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
+			dataGridViewCellStyle2->BackColor = System::Drawing::SystemColors::ControlLight;
+			dataGridViewCellStyle2->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>( 0 ) ) );
+			dataGridViewCellStyle2->ForeColor = System::Drawing::SystemColors::ControlText;
+			dataGridViewCellStyle2->SelectionBackColor = System::Drawing::SystemColors::Highlight;
+			dataGridViewCellStyle2->SelectionForeColor = System::Drawing::SystemColors::HighlightText;
+			dataGridViewCellStyle2->WrapMode = System::Windows::Forms::DataGridViewTriState::False;
+			this->dgvBooks->DefaultCellStyle = dataGridViewCellStyle2;
 			this->dgvBooks->EditMode = System::Windows::Forms::DataGridViewEditMode::EditProgrammatically;
 			this->dgvBooks->Location = System::Drawing::Point ( 12, 169 );
 			this->dgvBooks->MultiSelect = false;
 			this->dgvBooks->Name = L"dgvBooks";
 			this->dgvBooks->ReadOnly = true;
+			dataGridViewCellStyle3->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
+			dataGridViewCellStyle3->BackColor = System::Drawing::SystemColors::ControlLight;
+			dataGridViewCellStyle3->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>( 0 ) ) );
+			dataGridViewCellStyle3->ForeColor = System::Drawing::SystemColors::WindowText;
+			dataGridViewCellStyle3->SelectionBackColor = System::Drawing::SystemColors::Highlight;
+			dataGridViewCellStyle3->SelectionForeColor = System::Drawing::SystemColors::HighlightText;
+			dataGridViewCellStyle3->WrapMode = System::Windows::Forms::DataGridViewTriState::True;
+			this->dgvBooks->RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+			this->dgvBooks->RowTemplate->Resizable = System::Windows::Forms::DataGridViewTriState::True;
 			this->dgvBooks->SelectionMode = System::Windows::Forms::DataGridViewSelectionMode::FullRowSelect;
 			this->dgvBooks->Size = System::Drawing::Size ( 891, 252 );
 			this->dgvBooks->TabIndex = 0;
@@ -118,37 +150,47 @@ namespace LibraryMgmt
 			// 
 			// btReset
 			// 
-			this->btReset->Font = ( gcnew System::Drawing::Font ( L"Consolas", 14, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->btReset->BackColor = System::Drawing::SystemColors::ControlDark;
+			this->btReset->FlatAppearance->BorderSize = 0;
+			this->btReset->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btReset->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>( 0 ) ) );
 			this->btReset->Location = System::Drawing::Point ( 12, 31 );
 			this->btReset->Name = L"btReset";
 			this->btReset->Size = System::Drawing::Size ( 130, 94 );
 			this->btReset->TabIndex = 1;
 			this->btReset->Text = L"RESET";
-			this->btReset->UseVisualStyleBackColor = true;
+			this->btReset->UseVisualStyleBackColor = false;
 			this->btReset->Click += gcnew System::EventHandler ( this, &BooksUI::btReset_Click );
 			// 
 			// btBookName
 			// 
-			this->btBookName->Font = ( gcnew System::Drawing::Font ( L"Consolas", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->btBookName->BackColor = System::Drawing::SystemColors::ControlDark;
+			this->btBookName->FlatAppearance->BorderSize = 0;
+			this->btBookName->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btBookName->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>( 0 ) ) );
 			this->btBookName->Location = System::Drawing::Point ( 6, 19 );
 			this->btBookName->Name = L"btBookName";
 			this->btBookName->Size = System::Drawing::Size ( 272, 55 );
 			this->btBookName->TabIndex = 2;
 			this->btBookName->Text = L"Book Name";
-			this->btBookName->UseVisualStyleBackColor = true;
+			this->btBookName->UseVisualStyleBackColor = false;
 			this->btBookName->Click += gcnew System::EventHandler ( this, &BooksUI::btBookName_Click );
 			// 
 			// btAuthor
 			// 
-			this->btAuthor->Font = ( gcnew System::Drawing::Font ( L"Consolas", 14 ) );
+			this->btAuthor->BackColor = System::Drawing::SystemColors::ControlDark;
+			this->btAuthor->FlatAppearance->BorderSize = 0;
+			this->btAuthor->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btAuthor->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>( 0 ) ) );
 			this->btAuthor->Location = System::Drawing::Point ( 284, 19 );
 			this->btAuthor->Name = L"btAuthor";
 			this->btAuthor->Size = System::Drawing::Size ( 213, 55 );
 			this->btAuthor->TabIndex = 4;
 			this->btAuthor->Text = L"Author";
-			this->btAuthor->UseVisualStyleBackColor = true;
+			this->btAuthor->UseVisualStyleBackColor = false;
 			this->btAuthor->Click += gcnew System::EventHandler ( this, &BooksUI::btAuthor_Click );
 			// 
 			// gbSearchBooks
@@ -159,7 +201,7 @@ namespace LibraryMgmt
 			this->gbSearchBooks->Controls->Add ( this->cbBookName );
 			this->gbSearchBooks->Controls->Add ( this->btBookName );
 			this->gbSearchBooks->Controls->Add ( this->btAuthor );
-			this->gbSearchBooks->Font = ( gcnew System::Drawing::Font ( L"Consolas", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->gbSearchBooks->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>( 0 ) ) );
 			this->gbSearchBooks->Location = System::Drawing::Point ( 190, 12 );
 			this->gbSearchBooks->Name = L"gbSearchBooks";
@@ -172,6 +214,7 @@ namespace LibraryMgmt
 			// 
 			this->cbOwner->AutoCompleteMode = System::Windows::Forms::AutoCompleteMode::SuggestAppend;
 			this->cbOwner->AutoCompleteSource = System::Windows::Forms::AutoCompleteSource::ListItems;
+			this->cbOwner->BackColor = System::Drawing::SystemColors::ControlLightLight;
 			this->cbOwner->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 8.25F ) );
 			this->cbOwner->FormattingEnabled = true;
 			this->cbOwner->Location = System::Drawing::Point ( 503, 95 );
@@ -182,19 +225,24 @@ namespace LibraryMgmt
 			// 
 			// btOwner
 			// 
-			this->btOwner->Font = ( gcnew System::Drawing::Font ( L"Consolas", 14 ) );
+			this->btOwner->BackColor = System::Drawing::SystemColors::ControlDark;
+			this->btOwner->FlatAppearance->BorderSize = 0;
+			this->btOwner->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btOwner->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>( 0 ) ) );
 			this->btOwner->Location = System::Drawing::Point ( 503, 19 );
 			this->btOwner->Name = L"btOwner";
 			this->btOwner->Size = System::Drawing::Size ( 166, 55 );
 			this->btOwner->TabIndex = 7;
 			this->btOwner->Text = L"Owner";
-			this->btOwner->UseVisualStyleBackColor = true;
+			this->btOwner->UseVisualStyleBackColor = false;
 			this->btOwner->Click += gcnew System::EventHandler ( this, &BooksUI::btOwner_Click );
 			// 
 			// cbAuthor
 			// 
 			this->cbAuthor->AutoCompleteMode = System::Windows::Forms::AutoCompleteMode::SuggestAppend;
 			this->cbAuthor->AutoCompleteSource = System::Windows::Forms::AutoCompleteSource::ListItems;
+			this->cbAuthor->BackColor = System::Drawing::SystemColors::ControlLightLight;
 			this->cbAuthor->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 8.25F ) );
 			this->cbAuthor->FormattingEnabled = true;
 			this->cbAuthor->Location = System::Drawing::Point ( 284, 95 );
@@ -208,6 +256,7 @@ namespace LibraryMgmt
 			this->cbBookName->AllowDrop = true;
 			this->cbBookName->AutoCompleteMode = System::Windows::Forms::AutoCompleteMode::SuggestAppend;
 			this->cbBookName->AutoCompleteSource = System::Windows::Forms::AutoCompleteSource::ListItems;
+			this->cbBookName->BackColor = System::Drawing::SystemColors::ControlLightLight;
 			this->cbBookName->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 8.25F ) );
 			this->cbBookName->FormattingEnabled = true;
 			this->cbBookName->Location = System::Drawing::Point ( 6, 95 );
@@ -218,33 +267,42 @@ namespace LibraryMgmt
 			// 
 			// btIssue
 			// 
-			this->btIssue->Font = ( gcnew System::Drawing::Font ( L"Consolas", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->btIssue->BackColor = System::Drawing::SystemColors::ControlDark;
+			this->btIssue->FlatAppearance->BorderSize = 0;
+			this->btIssue->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btIssue->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>( 0 ) ) );
 			this->btIssue->Location = System::Drawing::Point ( 136, 456 );
 			this->btIssue->Name = L"btIssue";
 			this->btIssue->Size = System::Drawing::Size ( 272, 55 );
 			this->btIssue->TabIndex = 7;
 			this->btIssue->Text = L"Issue";
-			this->btIssue->UseVisualStyleBackColor = true;
+			this->btIssue->UseVisualStyleBackColor = false;
 			this->btIssue->Click += gcnew System::EventHandler ( this, &BooksUI::btIssue_Click );
 			// 
 			// btDelete
 			// 
-			this->btDelete->Font = ( gcnew System::Drawing::Font ( L"Consolas", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->btDelete->BackColor = System::Drawing::SystemColors::ControlDark;
+			this->btDelete->FlatAppearance->BorderSize = 0;
+			this->btDelete->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb ( static_cast<System::Int32>( static_cast<System::Byte>( 255 ) ),
+																									static_cast<System::Int32>( static_cast<System::Byte>( 128 ) ), static_cast<System::Int32>( static_cast<System::Byte>( 128 ) ) );
+			this->btDelete->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btDelete->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>( 0 ) ) );
-			this->btDelete->ForeColor = System::Drawing::Color::Red;
+			this->btDelete->ForeColor = System::Drawing::Color::DarkRed;
 			this->btDelete->Location = System::Drawing::Point ( 554, 456 );
 			this->btDelete->Name = L"btDelete";
 			this->btDelete->Size = System::Drawing::Size ( 272, 55 );
 			this->btDelete->TabIndex = 9;
 			this->btDelete->Text = L"Delete";
-			this->btDelete->UseVisualStyleBackColor = true;
+			this->btDelete->UseVisualStyleBackColor = false;
 			this->btDelete->Click += gcnew System::EventHandler ( this, &BooksUI::btDelete_Click );
 			// 
 			// BooksUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF ( 6, 13 );
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->BackColor = System::Drawing::SystemColors::ControlDarkDark;
 			this->ClientSize = System::Drawing::Size ( 935, 532 );
 			this->Controls->Add ( this->btDelete );
 			this->Controls->Add ( this->btIssue );
@@ -252,7 +310,7 @@ namespace LibraryMgmt
 			this->Controls->Add ( this->btReset );
 			this->Controls->Add ( this->dgvBooks );
 			this->Name = L"BooksUI";
-			this->Text = L"BooksUI";
+			this->Text = L"Books";
 			this->Shown += gcnew System::EventHandler ( this, &BooksUI::BooksUI_Shown );
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->dgvBooks ) )->EndInit ( );
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->dsBooks ) )->EndInit ( );
@@ -269,7 +327,14 @@ namespace LibraryMgmt
 		MySqlDataAdapter ^adapter = CDBManager::getAdapter ( "SELECT * FROM view_library ORDER BY id" );
 		dsBooks->Clear ( );
 		adapter->Fill ( dsBooks );
-		dgvBooks->DataSource = dsBooks->Tables[ 0 ];
+		auto table = dsBooks->Tables[ 0 ];
+		if ( !table->Columns->Contains ( "Status" ) )
+		{
+			table->Columns->Add ( "Status" );
+			table->Columns[ "Status" ]->Expression = "IIF(Available=1, 'Available', 'Issued')";
+		}
+		dgvBooks->DataSource = table;
+		dgvBooks->Columns[ "Available" ]->Visible = false;
 	}
 
 	private: System::Void btReset_Click ( System::Object^  sender, System::EventArgs^  e )
@@ -342,11 +407,11 @@ namespace LibraryMgmt
 
 	private: System::Void btIssue_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
-		int id = dgvBooks->CurrentRow->Index + 1;
+		int id = Convert::ToInt32 ( dgvBooks->CurrentRow->Cells[ "ID" ]->Value );
 		if ( btIssue->Text == "Return" )
 		{
-			auto reader = CDBManager::query ( "SELECT * FROM issue_history WHERE lib_id = " + id.ToString ( ) + 
-											  " AND return_date IS NULL");
+			auto reader = CDBManager::query ( "SELECT * FROM issue_history WHERE lib_id = " + id.ToString ( ) +
+											  " AND return_date IS NULL" );
 			if ( reader->Read ( ) )
 			{
 				auto cmd = CDBManager::getCmd ( "UPDATE issue_history SET return_date = @return_date "
@@ -356,7 +421,8 @@ namespace LibraryMgmt
 				cmd->ExecuteNonQuery ( );
 			}
 			refreshView ( );
-			MessageBox::Show ( "The book has been returned." );
+			MessageBox::Show ( "The book has been returned.", "Returned",
+							   MessageBoxButtons::OK, MessageBoxIcon::Asterisk );
 			return;
 		}
 		if ( !issueUI->Visible )
@@ -364,21 +430,31 @@ namespace LibraryMgmt
 			issueUI = gcnew IssueUI ( id, dgvBooks );
 			issueUI->Show ( );
 		}
+		else
+			issueUI->lib_id = id;
 		issueUI->Focus ( );
 	}
 
 	private: System::Void btDelete_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
-		// TO DO
+		int id = Convert::ToInt32 ( dgvBooks->CurrentRow->Cells[ "ID" ]->Value );
+		auto result = MessageBox::Show ( "This operation is irreversible.\n"
+										 "Proceed?", "Delete Book", MessageBoxButtons::YesNo,
+									 MessageBoxIcon::Question, MessageBoxDefaultButton::Button2 );
+		if ( result == System::Windows::Forms::DialogResult::Yes )
+		{
+			CDBManager::nonQuery ( "DELETE FROM library WHERE id = " + id.ToString ( ) );
+			refreshView ( );
+		}
 	}
 
 	private: System::Void dgvBooks_CurrentCellChanged ( System::Object^  sender, System::EventArgs^  e )
 	{
 		if ( !dgvBooks->CurrentRow )
 			return;
-		int id = dgvBooks->CurrentRow->Index + 1;
+		int id = Convert::ToInt32 ( dgvBooks->CurrentRow->Cells[ "ID" ]->Value );
 		btIssue->Text = ( Convert::ToBoolean ( dgvBooks->CurrentRow->Cells[ "Available" ]->Value ) ) ?
-						"Issue" : "Return";
+			"Issue" : "Return";
 	}
 
 	private: System::Void dgvBooks_CellDoubleClick ( System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e )
