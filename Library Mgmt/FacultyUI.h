@@ -38,7 +38,7 @@ namespace LibraryMgmt
 
 
 #pragma region Controls
-	private: System::Windows::Forms::ErrorProvider^  errorProvider;
+
 
 	private: System::Windows::Forms::GroupBox^  gbAddBook;
 	private: System::Windows::Forms::Button^  btAddBook;
@@ -72,7 +72,6 @@ namespace LibraryMgmt
 		void InitializeComponent ( void )
 		{
 			this->components = ( gcnew System::ComponentModel::Container ( ) );
-			this->errorProvider = ( gcnew System::Windows::Forms::ErrorProvider ( this->components ) );
 			this->cbAuthor = ( gcnew System::Windows::Forms::ComboBox ( ) );
 			this->lblBookName = ( gcnew System::Windows::Forms::Label ( ) );
 			this->lblAuthor = ( gcnew System::Windows::Forms::Label ( ) );
@@ -84,13 +83,8 @@ namespace LibraryMgmt
 			this->gbAddBook = ( gcnew System::Windows::Forms::GroupBox ( ) );
 			this->cbBookName = ( gcnew System::Windows::Forms::ComboBox ( ) );
 			this->toolTip = ( gcnew System::Windows::Forms::ToolTip ( this->components ) );
-			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->errorProvider ) )->BeginInit ( );
 			this->gbAddBook->SuspendLayout ( );
 			this->SuspendLayout ( );
-			// 
-			// errorProvider
-			// 
-			this->errorProvider->ContainerControl = this;
 			// 
 			// cbAuthor
 			// 
@@ -233,7 +227,6 @@ namespace LibraryMgmt
 			this->Name = L"FacultyUI";
 			this->Text = L"Faculty";
 			this->Shown += gcnew System::EventHandler ( this, &FacultyUI::FacultyUI_Shown );
-			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->errorProvider ) )->EndInit ( );
 			this->gbAddBook->ResumeLayout ( false );
 			this->ResumeLayout ( false );
 
@@ -247,7 +240,6 @@ namespace LibraryMgmt
 		String ^category = cbCategory->Text;
 		String ^owner = cbOwner->Text;
 		int author_id, book_id, owner_id, category_id, status = 0;
-		errorProvider->Clear ( );
 
 		if ( !( String::IsNullOrEmpty ( author ) ) )
 		{

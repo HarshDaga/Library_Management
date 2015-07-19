@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-07-19 22:52:31
+Date: 2015-07-20 03:28:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -194,7 +194,7 @@ CREATE TABLE `categories` (
 -- ----------------------------
 -- Records of categories
 -- ----------------------------
-INSERT INTO `categories` VALUES ('1', 'blank');
+INSERT INTO `categories` VALUES ('1', 'Unknown');
 
 -- ----------------------------
 -- Table structure for issue_history
