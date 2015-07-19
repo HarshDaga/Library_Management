@@ -21,6 +21,7 @@ namespace LibraryMgmt
 		String ^book_name, ^author_name, ^owner_name;
 		IssueUI ^issueUI;
 	private: System::Windows::Forms::Button^  btIssue;
+	private: System::Windows::Forms::ToolTip^  toolTip;
 	private: System::Windows::Forms::Button^  btDelete;
 	public:
 		BooksUI ( void )
@@ -58,6 +59,7 @@ namespace LibraryMgmt
 
 	private: System::Windows::Forms::ComboBox^  cbAuthor;
 	private: System::Windows::Forms::ComboBox^  cbBookName;
+	private: System::ComponentModel::IContainer^  components;
 
 #pragma endregion
 
@@ -65,7 +67,7 @@ namespace LibraryMgmt
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -74,6 +76,7 @@ namespace LibraryMgmt
 		/// </summary>
 		void InitializeComponent ( void )
 		{
+			this->components = ( gcnew System::ComponentModel::Container ( ) );
 			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle1 = ( gcnew System::Windows::Forms::DataGridViewCellStyle ( ) );
 			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle2 = ( gcnew System::Windows::Forms::DataGridViewCellStyle ( ) );
 			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle3 = ( gcnew System::Windows::Forms::DataGridViewCellStyle ( ) );
@@ -89,6 +92,7 @@ namespace LibraryMgmt
 			this->cbBookName = ( gcnew System::Windows::Forms::ComboBox ( ) );
 			this->btIssue = ( gcnew System::Windows::Forms::Button ( ) );
 			this->btDelete = ( gcnew System::Windows::Forms::Button ( ) );
+			this->toolTip = ( gcnew System::Windows::Forms::ToolTip ( this->components ) );
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->dgvBooks ) )->BeginInit ( );
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->dsBooks ) )->BeginInit ( );
 			this->gbSearchBooks->SuspendLayout ( );
@@ -140,6 +144,7 @@ namespace LibraryMgmt
 			this->dgvBooks->SelectionMode = System::Windows::Forms::DataGridViewSelectionMode::FullRowSelect;
 			this->dgvBooks->Size = System::Drawing::Size ( 891, 358 );
 			this->dgvBooks->TabIndex = 0;
+			this->dgvBooks->TabStop = false;
 			this->dgvBooks->CellDoubleClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler ( this, &BooksUI::dgvBooks_CellDoubleClick );
 			this->dgvBooks->CurrentCellChanged += gcnew System::EventHandler ( this, &BooksUI::dgvBooks_CurrentCellChanged );
 			// 
@@ -159,6 +164,7 @@ namespace LibraryMgmt
 			this->btReset->Size = System::Drawing::Size ( 130, 94 );
 			this->btReset->TabIndex = 1;
 			this->btReset->Text = L"RESET";
+			this->toolTip->SetToolTip ( this->btReset, L"Reset all filters." );
 			this->btReset->UseVisualStyleBackColor = false;
 			this->btReset->Click += gcnew System::EventHandler ( this, &BooksUI::btReset_Click );
 			// 
@@ -174,6 +180,7 @@ namespace LibraryMgmt
 			this->btBookName->Size = System::Drawing::Size ( 272, 55 );
 			this->btBookName->TabIndex = 2;
 			this->btBookName->Text = L"Book Name";
+			this->toolTip->SetToolTip ( this->btBookName, L"Filter by book name." );
 			this->btBookName->UseVisualStyleBackColor = false;
 			this->btBookName->Click += gcnew System::EventHandler ( this, &BooksUI::btBookName_Click );
 			// 
@@ -187,8 +194,9 @@ namespace LibraryMgmt
 			this->btAuthor->Location = System::Drawing::Point ( 284, 19 );
 			this->btAuthor->Name = L"btAuthor";
 			this->btAuthor->Size = System::Drawing::Size ( 213, 55 );
-			this->btAuthor->TabIndex = 4;
+			this->btAuthor->TabIndex = 3;
 			this->btAuthor->Text = L"Author";
+			this->toolTip->SetToolTip ( this->btAuthor, L"Filter by author name." );
 			this->btAuthor->UseVisualStyleBackColor = false;
 			this->btAuthor->Click += gcnew System::EventHandler ( this, &BooksUI::btAuthor_Click );
 			// 
@@ -220,7 +228,7 @@ namespace LibraryMgmt
 			this->cbOwner->Name = L"cbOwner";
 			this->cbOwner->Size = System::Drawing::Size ( 166, 21 );
 			this->cbOwner->Sorted = true;
-			this->cbOwner->TabIndex = 8;
+			this->cbOwner->TabIndex = 7;
 			// 
 			// btOwner
 			// 
@@ -232,8 +240,9 @@ namespace LibraryMgmt
 			this->btOwner->Location = System::Drawing::Point ( 503, 19 );
 			this->btOwner->Name = L"btOwner";
 			this->btOwner->Size = System::Drawing::Size ( 166, 55 );
-			this->btOwner->TabIndex = 7;
+			this->btOwner->TabIndex = 4;
 			this->btOwner->Text = L"Owner";
+			this->toolTip->SetToolTip ( this->btOwner, L"Filter by owner name." );
 			this->btOwner->UseVisualStyleBackColor = false;
 			this->btOwner->Click += gcnew System::EventHandler ( this, &BooksUI::btOwner_Click );
 			// 
@@ -274,7 +283,7 @@ namespace LibraryMgmt
 			this->btIssue->Location = System::Drawing::Point ( 125, 533 );
 			this->btIssue->Name = L"btIssue";
 			this->btIssue->Size = System::Drawing::Size ( 272, 55 );
-			this->btIssue->TabIndex = 7;
+			this->btIssue->TabIndex = 8;
 			this->btIssue->Text = L"Issue";
 			this->btIssue->UseVisualStyleBackColor = false;
 			this->btIssue->Click += gcnew System::EventHandler ( this, &BooksUI::btIssue_Click );
@@ -294,6 +303,7 @@ namespace LibraryMgmt
 			this->btDelete->Size = System::Drawing::Size ( 272, 55 );
 			this->btDelete->TabIndex = 9;
 			this->btDelete->Text = L"Delete";
+			this->toolTip->SetToolTip ( this->btDelete, L"Delete entry from database!" );
 			this->btDelete->UseVisualStyleBackColor = false;
 			this->btDelete->Click += gcnew System::EventHandler ( this, &BooksUI::btDelete_Click );
 			// 

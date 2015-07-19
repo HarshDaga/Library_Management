@@ -26,6 +26,7 @@ namespace LibraryMgmt {
 	private: System::Windows::Forms::StatusStrip^  statusStrip;
 	private: System::Windows::Forms::ToolStripStatusLabel^  slblStatus;
 	private: System::Windows::Forms::Button^  btHistory;
+	private: System::Windows::Forms::ToolTip^  toolTip;
 	private: System::Windows::Forms::ToolStripStatusLabel^  slblConnected;
 	public:
 		MainUI(void)
@@ -73,11 +74,12 @@ namespace LibraryMgmt {
 		}
 	private: System::Windows::Forms::Button^  btFaculty;
 	private: System::Windows::Forms::Button^  btBooks;
+	private: System::ComponentModel::IContainer^  components;
 	private:
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -86,12 +88,14 @@ namespace LibraryMgmt {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			this->components = ( gcnew System::ComponentModel::Container ( ) );
 			this->btFaculty = ( gcnew System::Windows::Forms::Button ( ) );
 			this->btBooks = ( gcnew System::Windows::Forms::Button ( ) );
 			this->statusStrip = ( gcnew System::Windows::Forms::StatusStrip ( ) );
 			this->slblStatus = ( gcnew System::Windows::Forms::ToolStripStatusLabel ( ) );
 			this->slblConnected = ( gcnew System::Windows::Forms::ToolStripStatusLabel ( ) );
 			this->btHistory = ( gcnew System::Windows::Forms::Button ( ) );
+			this->toolTip = ( gcnew System::Windows::Forms::ToolTip ( this->components ) );
 			this->statusStrip->SuspendLayout ( );
 			this->SuspendLayout ( );
 			// 
@@ -108,6 +112,7 @@ namespace LibraryMgmt {
 			this->btFaculty->Size = System::Drawing::Size ( 237, 242 );
 			this->btFaculty->TabIndex = 0;
 			this->btFaculty->Text = L"Faculty";
+			this->toolTip->SetToolTip ( this->btFaculty, L"Add elements to the database." );
 			this->btFaculty->UseVisualStyleBackColor = false;
 			this->btFaculty->Click += gcnew System::EventHandler ( this, &MainUI::btFaculty_Click );
 			// 
@@ -123,6 +128,7 @@ namespace LibraryMgmt {
 			this->btBooks->Size = System::Drawing::Size ( 237, 242 );
 			this->btBooks->TabIndex = 1;
 			this->btBooks->Text = L"Books";
+			this->toolTip->SetToolTip ( this->btBooks, L"View/Issue/Return/Delete books from library." );
 			this->btBooks->UseVisualStyleBackColor = false;
 			this->btBooks->Click += gcnew System::EventHandler ( this, &MainUI::btBooks_Click );
 			// 
@@ -167,6 +173,7 @@ namespace LibraryMgmt {
 			this->btHistory->Size = System::Drawing::Size ( 237, 242 );
 			this->btHistory->TabIndex = 3;
 			this->btHistory->Text = L"Issue History";
+			this->toolTip->SetToolTip ( this->btHistory, L"View the issue history." );
 			this->btHistory->UseVisualStyleBackColor = false;
 			this->btHistory->Click += gcnew System::EventHandler ( this, &MainUI::btHistory_Click );
 			// 

@@ -51,6 +51,7 @@ namespace LibraryMgmt
 	private: System::Windows::Forms::Label^  lblAuthor;
 	private: System::Windows::Forms::ComboBox^  cbCategory;
 	private: System::Windows::Forms::ComboBox^  cbBookName;
+	private: System::Windows::Forms::ToolTip^  toolTip;
 #pragma endregion
 
 
@@ -82,6 +83,7 @@ namespace LibraryMgmt
 			this->btAddBook = ( gcnew System::Windows::Forms::Button ( ) );
 			this->gbAddBook = ( gcnew System::Windows::Forms::GroupBox ( ) );
 			this->cbBookName = ( gcnew System::Windows::Forms::ComboBox ( ) );
+			this->toolTip = ( gcnew System::Windows::Forms::ToolTip ( this->components ) );
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->errorProvider ) )->BeginInit ( );
 			this->gbAddBook->SuspendLayout ( );
 			this->SuspendLayout ( );
@@ -182,6 +184,7 @@ namespace LibraryMgmt
 			this->btAddBook->Size = System::Drawing::Size ( 788, 50 );
 			this->btAddBook->TabIndex = 15;
 			this->btAddBook->Text = L"Add";
+			this->toolTip->SetToolTip ( this->btAddBook, L"Add the entered elements in the database." );
 			this->btAddBook->UseVisualStyleBackColor = false;
 			this->btAddBook->Click += gcnew System::EventHandler ( this, &FacultyUI::btAddBook_Click );
 			// 

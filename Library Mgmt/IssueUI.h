@@ -23,6 +23,8 @@ namespace LibraryMgmt
 	private: System::Windows::Forms::ErrorProvider^  errorProvider;
 	private: System::Windows::Forms::GroupBox^  gbStaff;
 	private: System::Windows::Forms::GroupBox^  gbStudents;
+	private: System::Windows::Forms::ToolTip^  toolTip;
+
 	private: System::Windows::Forms::TextBox^  tbStudentName;
 	public:
 		IssueUI ( int lib_id, DataGridView ^dgvBooks )
@@ -73,6 +75,7 @@ namespace LibraryMgmt
 			this->errorProvider = ( gcnew System::Windows::Forms::ErrorProvider ( this->components ) );
 			this->gbStudents = ( gcnew System::Windows::Forms::GroupBox ( ) );
 			this->gbStaff = ( gcnew System::Windows::Forms::GroupBox ( ) );
+			this->toolTip = ( gcnew System::Windows::Forms::ToolTip ( this->components ) );
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->errorProvider ) )->BeginInit ( );
 			this->gbStudents->SuspendLayout ( );
 			this->gbStaff->SuspendLayout ( );
@@ -91,6 +94,7 @@ namespace LibraryMgmt
 			this->cbStudentID->Size = System::Drawing::Size ( 272, 21 );
 			this->cbStudentID->Sorted = true;
 			this->cbStudentID->TabIndex = 6;
+			this->toolTip->SetToolTip ( this->cbStudentID, L"Student roll no." );
 			this->cbStudentID->TextChanged += gcnew System::EventHandler ( this, &IssueUI::cbStudentID_TextChanged );
 			// 
 			// cbStaffID
@@ -106,6 +110,7 @@ namespace LibraryMgmt
 			this->cbStaffID->Size = System::Drawing::Size ( 272, 21 );
 			this->cbStaffID->Sorted = true;
 			this->cbStaffID->TabIndex = 9;
+			this->toolTip->SetToolTip ( this->cbStaffID, L"Professor name." );
 			// 
 			// btStudent
 			// 
@@ -119,6 +124,7 @@ namespace LibraryMgmt
 			this->btStudent->Size = System::Drawing::Size ( 181, 69 );
 			this->btStudent->TabIndex = 8;
 			this->btStudent->Text = L"Student";
+			this->toolTip->SetToolTip ( this->btStudent, L"Issue the book as a student." );
 			this->btStudent->UseVisualStyleBackColor = false;
 			this->btStudent->Click += gcnew System::EventHandler ( this, &IssueUI::btStudent_Click );
 			// 
@@ -134,6 +140,7 @@ namespace LibraryMgmt
 			this->btStaff->Size = System::Drawing::Size ( 181, 69 );
 			this->btStaff->TabIndex = 10;
 			this->btStaff->Text = L"Professor";
+			this->toolTip->SetToolTip ( this->btStaff, L"Issue the book as a professor." );
 			this->btStaff->UseVisualStyleBackColor = false;
 			this->btStaff->Click += gcnew System::EventHandler ( this, &IssueUI::btStaff_Click );
 			// 
@@ -145,6 +152,7 @@ namespace LibraryMgmt
 			this->tbStudentName->Name = L"tbStudentName";
 			this->tbStudentName->Size = System::Drawing::Size ( 272, 26 );
 			this->tbStudentName->TabIndex = 7;
+			this->toolTip->SetToolTip ( this->tbStudentName, L"Add a student name if the student doesn\'t exist in the database." );
 			// 
 			// errorProvider
 			// 
@@ -279,5 +287,6 @@ namespace LibraryMgmt
 		if ( !tbStudentName->Enabled )
 			tbStudentName->Text = CLibDBManager::findStudent ( student_id, true );
 	}
+
 };
 }
