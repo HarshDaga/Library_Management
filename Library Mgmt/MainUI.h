@@ -12,6 +12,7 @@ namespace LibraryMgmt {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Resources;
 
 	/// <summary>
 	/// Summary for MainUI
@@ -30,6 +31,8 @@ namespace LibraryMgmt {
 		MainUI(void)
 		{
 			InitializeComponent();
+			auto res = gcnew Resources::ResXResourceSet ( "./Resource.resx" );
+			this->Icon = cli::safe_cast<Drawing::Icon^> ( res->GetObject ( "Icon", true ) );
 			try
 			{
 				CDBManager::CDBManager ( );
@@ -130,6 +133,7 @@ namespace LibraryMgmt {
 			this->statusStrip->Location = System::Drawing::Point ( 0, 257 );
 			this->statusStrip->Name = L"statusStrip";
 			this->statusStrip->Size = System::Drawing::Size ( 747, 22 );
+			this->statusStrip->SizingGrip = false;
 			this->statusStrip->TabIndex = 2;
 			this->statusStrip->Text = L"statusStrip";
 			// 
@@ -177,9 +181,10 @@ namespace LibraryMgmt {
 			this->Controls->Add ( this->btBooks );
 			this->Controls->Add ( this->btFaculty );
 			this->Cursor = System::Windows::Forms::Cursors::Default;
+			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::Fixed3D;
 			this->Name = L"MainUI";
 			this->RightToLeft = System::Windows::Forms::RightToLeft::No;
-			this->Text = L"Library Management";
+			this->Text = L"Computer Department Library";
 			this->statusStrip->ResumeLayout ( false );
 			this->statusStrip->PerformLayout ( );
 			this->ResumeLayout ( false );

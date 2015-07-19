@@ -10,6 +10,7 @@ namespace LibraryMgmt
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Resources;
 
 	/// <summary>
 	/// Summary for Issue_Return
@@ -26,6 +27,8 @@ namespace LibraryMgmt
 	public:
 		IssueUI ( int lib_id, DataGridView ^dgvBooks )
 		{
+			auto res = gcnew ResXResourceSet ( "./Resource.resx" );
+			this->Icon = cli::safe_cast<Drawing::Icon^> ( res->GetObject ( "Icon", true ) );
 			this->dgvBooks = dgvBooks;
 			this->lib_id = lib_id;
 			InitializeComponent ( );
@@ -183,6 +186,7 @@ namespace LibraryMgmt
 			this->ClientSize = System::Drawing::Size ( 597, 332 );
 			this->Controls->Add ( this->gbStaff );
 			this->Controls->Add ( this->gbStudents );
+			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::Fixed3D;
 			this->Name = L"IssueUI";
 			this->Text = L"Issue";
 			this->Shown += gcnew System::EventHandler ( this, &IssueUI::IssueUI_Shown );

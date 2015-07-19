@@ -9,6 +9,7 @@ namespace LibraryMgmt {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Resources;
 
 	/// <summary>
 	/// Summary for IssueHistoryUI
@@ -18,6 +19,8 @@ namespace LibraryMgmt {
 	public:
 		IssueHistoryUI(void)
 		{
+			auto res = gcnew Resources::ResXResourceSet ( "./Resource.resx" );
+			this->Icon = cli::safe_cast<Drawing::Icon^> ( res->GetObject ( "Icon", true ) );
 			InitializeComponent ( );
 			MySqlDataAdapter ^adapter = CDBManager::getAdapter ( "SELECT * FROM view_issue_history" );
 			dsHistory->Clear ( );
@@ -119,6 +122,7 @@ namespace LibraryMgmt {
 			this->BackColor = System::Drawing::SystemColors::ControlDarkDark;
 			this->ClientSize = System::Drawing::Size ( 943, 435 );
 			this->Controls->Add ( this->dgvHistory );
+			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::Fixed3D;
 			this->Name = L"IssueHistoryUI";
 			this->Text = L"Issue History";
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->dgvHistory ) )->EndInit ( );

@@ -19,10 +19,9 @@ namespace LibraryMgmt
 	public:
 		FacultyUI ( void )
 		{
+			auto res = gcnew Resources::ResXResourceSet ( "./Resource.resx" );
+			this->Icon = cli::safe_cast<Drawing::Icon^> ( res->GetObject ( "Icon", true ) );
 			InitializeComponent ( );
-			//
-			//TODO: Add the constructor code here
-			//
 		}
 
 	protected:
@@ -72,7 +71,6 @@ namespace LibraryMgmt
 		void InitializeComponent ( void )
 		{
 			this->components = ( gcnew System::ComponentModel::Container ( ) );
-			System::ComponentModel::ComponentResourceManager^  resources = ( gcnew System::ComponentModel::ComponentResourceManager ( FacultyUI::typeid ) );
 			this->errorProvider = ( gcnew System::Windows::Forms::ErrorProvider ( this->components ) );
 			this->cbAuthor = ( gcnew System::Windows::Forms::ComboBox ( ) );
 			this->lblBookName = ( gcnew System::Windows::Forms::Label ( ) );
@@ -228,7 +226,7 @@ namespace LibraryMgmt
 			this->BackColor = System::Drawing::SystemColors::ControlDarkDark;
 			this->ClientSize = System::Drawing::Size ( 878, 378 );
 			this->Controls->Add ( this->gbAddBook );
-			this->Icon = ( cli::safe_cast<System::Drawing::Icon^>( resources->GetObject ( L"$this.Icon" ) ) );
+			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::Fixed3D;
 			this->Name = L"FacultyUI";
 			this->Text = L"Faculty";
 			this->Shown += gcnew System::EventHandler ( this, &FacultyUI::FacultyUI_Shown );

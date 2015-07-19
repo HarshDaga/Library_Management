@@ -25,6 +25,8 @@ namespace LibraryMgmt
 	public:
 		BooksUI ( void )
 		{
+			auto res = gcnew Resources::ResXResourceSet ( "./Resource.resx" );
+			this->Icon = cli::safe_cast<Drawing::Icon^> ( res->GetObject ( "Icon", true ) );
 			InitializeComponent ( );
 			issueUI = gcnew IssueUI ( 0, dgvBooks );
 		}
@@ -43,9 +45,6 @@ namespace LibraryMgmt
 #pragma region Controls
 	public: System::Windows::Forms::DataGridView^  dgvBooks;
 	public: System::Windows::Forms::Button^  btReset;
-	private:
-
-	protected:
 
 	private: System::Windows::Forms::Button^  btBookName;
 	private: System::Windows::Forms::Button^  btAuthor;
@@ -139,7 +138,7 @@ namespace LibraryMgmt
 			this->dgvBooks->RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
 			this->dgvBooks->RowTemplate->Resizable = System::Windows::Forms::DataGridViewTriState::True;
 			this->dgvBooks->SelectionMode = System::Windows::Forms::DataGridViewSelectionMode::FullRowSelect;
-			this->dgvBooks->Size = System::Drawing::Size ( 891, 252 );
+			this->dgvBooks->Size = System::Drawing::Size ( 891, 358 );
 			this->dgvBooks->TabIndex = 0;
 			this->dgvBooks->CellDoubleClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler ( this, &BooksUI::dgvBooks_CellDoubleClick );
 			this->dgvBooks->CurrentCellChanged += gcnew System::EventHandler ( this, &BooksUI::dgvBooks_CurrentCellChanged );
@@ -272,7 +271,7 @@ namespace LibraryMgmt
 			this->btIssue->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btIssue->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>( 0 ) ) );
-			this->btIssue->Location = System::Drawing::Point ( 136, 456 );
+			this->btIssue->Location = System::Drawing::Point ( 125, 533 );
 			this->btIssue->Name = L"btIssue";
 			this->btIssue->Size = System::Drawing::Size ( 272, 55 );
 			this->btIssue->TabIndex = 7;
@@ -290,7 +289,7 @@ namespace LibraryMgmt
 			this->btDelete->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>( 0 ) ) );
 			this->btDelete->ForeColor = System::Drawing::Color::DarkRed;
-			this->btDelete->Location = System::Drawing::Point ( 554, 456 );
+			this->btDelete->Location = System::Drawing::Point ( 543, 533 );
 			this->btDelete->Name = L"btDelete";
 			this->btDelete->Size = System::Drawing::Size ( 272, 55 );
 			this->btDelete->TabIndex = 9;
@@ -303,12 +302,13 @@ namespace LibraryMgmt
 			this->AutoScaleDimensions = System::Drawing::SizeF ( 6, 13 );
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ControlDarkDark;
-			this->ClientSize = System::Drawing::Size ( 935, 532 );
+			this->ClientSize = System::Drawing::Size ( 935, 600 );
 			this->Controls->Add ( this->btDelete );
 			this->Controls->Add ( this->btIssue );
 			this->Controls->Add ( this->gbSearchBooks );
 			this->Controls->Add ( this->btReset );
 			this->Controls->Add ( this->dgvBooks );
+			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::Fixed3D;
 			this->Name = L"BooksUI";
 			this->Text = L"Books";
 			this->Shown += gcnew System::EventHandler ( this, &BooksUI::BooksUI_Shown );
