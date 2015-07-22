@@ -1,6 +1,7 @@
 #pragma once
 #include "common.h"
 #include "IssueUI.h"
+#include "IssueHistoryUI.h"
 
 namespace LibraryMgmt
 {
@@ -20,8 +21,15 @@ namespace LibraryMgmt
 	public:
 		String ^book_name, ^author_name, ^owner_name;
 		IssueUI ^issueUI;
+		IssueHistoryUI ^issueHistoryUI;
 	private: System::Windows::Forms::Button^  btIssue;
 	private: System::Windows::Forms::ToolTip^  toolTip;
+	private: System::Windows::Forms::ContextMenuStrip^  contextMenuStrip;
+	private: System::Windows::Forms::ToolStripMenuItem^  issueToolStripMenuItem;
+
+	private: System::Windows::Forms::ToolStripMenuItem^  issueHistoryToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^  deleteToolStripMenuItem;
+
 	private: System::Windows::Forms::Button^  btDelete;
 	public:
 		BooksUI ( void )
@@ -30,6 +38,7 @@ namespace LibraryMgmt
 			this->Icon = cli::safe_cast<Drawing::Icon^> ( res->GetObject ( "Icon", true ) );
 			InitializeComponent ( );
 			issueUI = gcnew IssueUI ( 0, dgvBooks );
+			issueHistoryUI = gcnew IssueHistoryUI ( );
 		}
 
 	protected:
@@ -81,6 +90,9 @@ namespace LibraryMgmt
 			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle2 = ( gcnew System::Windows::Forms::DataGridViewCellStyle ( ) );
 			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle3 = ( gcnew System::Windows::Forms::DataGridViewCellStyle ( ) );
 			this->dgvBooks = ( gcnew System::Windows::Forms::DataGridView ( ) );
+			this->contextMenuStrip = ( gcnew System::Windows::Forms::ContextMenuStrip ( this->components ) );
+			this->issueToolStripMenuItem = ( gcnew System::Windows::Forms::ToolStripMenuItem ( ) );
+			this->issueHistoryToolStripMenuItem = ( gcnew System::Windows::Forms::ToolStripMenuItem ( ) );
 			this->dsBooks = ( gcnew System::Data::DataSet ( ) );
 			this->btReset = ( gcnew System::Windows::Forms::Button ( ) );
 			this->btBookName = ( gcnew System::Windows::Forms::Button ( ) );
@@ -93,7 +105,9 @@ namespace LibraryMgmt
 			this->btIssue = ( gcnew System::Windows::Forms::Button ( ) );
 			this->btDelete = ( gcnew System::Windows::Forms::Button ( ) );
 			this->toolTip = ( gcnew System::Windows::Forms::ToolTip ( this->components ) );
+			this->deleteToolStripMenuItem = ( gcnew System::Windows::Forms::ToolStripMenuItem ( ) );
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->dgvBooks ) )->BeginInit ( );
+			this->contextMenuStrip->SuspendLayout ( );
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->dsBooks ) )->BeginInit ( );
 			this->gbSearchBooks->SuspendLayout ( );
 			this->SuspendLayout ( );
@@ -117,6 +131,7 @@ namespace LibraryMgmt
 			dataGridViewCellStyle1->WrapMode = System::Windows::Forms::DataGridViewTriState::True;
 			this->dgvBooks->ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			this->dgvBooks->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dgvBooks->ContextMenuStrip = this->contextMenuStrip;
 			dataGridViewCellStyle2->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
 			dataGridViewCellStyle2->BackColor = System::Drawing::SystemColors::ControlLight;
 			dataGridViewCellStyle2->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular,
@@ -145,8 +160,34 @@ namespace LibraryMgmt
 			this->dgvBooks->Size = System::Drawing::Size ( 891, 358 );
 			this->dgvBooks->TabIndex = 0;
 			this->dgvBooks->TabStop = false;
+			this->toolTip->SetToolTip ( this->dgvBooks, L"Double Click or Return to Issue" );
 			this->dgvBooks->CellDoubleClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler ( this, &BooksUI::dgvBooks_CellDoubleClick );
 			this->dgvBooks->CurrentCellChanged += gcnew System::EventHandler ( this, &BooksUI::dgvBooks_CurrentCellChanged );
+			this->dgvBooks->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler ( this, &BooksUI::dgvBooks_KeyPress );
+			// 
+			// contextMenuStrip
+			// 
+			this->contextMenuStrip->Items->AddRange ( gcnew cli::array< System::Windows::Forms::ToolStripItem^  > ( 3 )
+			{
+				this->issueToolStripMenuItem,
+					this->issueHistoryToolStripMenuItem, this->deleteToolStripMenuItem
+			} );
+			this->contextMenuStrip->Name = L"contextMenuStrip";
+			this->contextMenuStrip->Size = System::Drawing::Size ( 170, 92 );
+			// 
+			// issueToolStripMenuItem
+			// 
+			this->issueToolStripMenuItem->Name = L"issueToolStripMenuItem";
+			this->issueToolStripMenuItem->Size = System::Drawing::Size ( 169, 22 );
+			this->issueToolStripMenuItem->Text = L"Issue";
+			this->issueToolStripMenuItem->Click += gcnew System::EventHandler ( this, &BooksUI::menuItemIssue_Click );
+			// 
+			// issueHistoryToolStripMenuItem
+			// 
+			this->issueHistoryToolStripMenuItem->Name = L"issueHistoryToolStripMenuItem";
+			this->issueHistoryToolStripMenuItem->Size = System::Drawing::Size ( 169, 22 );
+			this->issueHistoryToolStripMenuItem->Text = L"View Issue History";
+			this->issueHistoryToolStripMenuItem->Click += gcnew System::EventHandler ( this, &BooksUI::issueHistoryToolStripMenuItem_Click );
 			// 
 			// dsBooks
 			// 
@@ -307,6 +348,13 @@ namespace LibraryMgmt
 			this->btDelete->UseVisualStyleBackColor = false;
 			this->btDelete->Click += gcnew System::EventHandler ( this, &BooksUI::btDelete_Click );
 			// 
+			// deleteToolStripMenuItem
+			// 
+			this->deleteToolStripMenuItem->Name = L"deleteToolStripMenuItem";
+			this->deleteToolStripMenuItem->Size = System::Drawing::Size ( 169, 22 );
+			this->deleteToolStripMenuItem->Text = L"Delete";
+			this->deleteToolStripMenuItem->Click += gcnew System::EventHandler ( this, &BooksUI::deleteToolStripMenuItem_Click );
+			// 
 			// BooksUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF ( 6, 13 );
@@ -323,6 +371,7 @@ namespace LibraryMgmt
 			this->Text = L"Books";
 			this->Shown += gcnew System::EventHandler ( this, &BooksUI::BooksUI_Shown );
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->dgvBooks ) )->EndInit ( );
+			this->contextMenuStrip->ResumeLayout ( false );
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->dsBooks ) )->EndInit ( );
 			this->gbSearchBooks->ResumeLayout ( false );
 			this->ResumeLayout ( false );
@@ -355,23 +404,20 @@ namespace LibraryMgmt
 
 	private: System::Void cbAuthor_Fetch ( )
 	{
-		auto names = CLibDBManager::getAuthors ( );
 		cbAuthor->Items->Clear ( );
-		cbAuthor->Items->AddRange ( names->ToArray ( ) );
+		cbAuthor->Items->AddRange ( CLibDBManager::getAuthors ( )->ToArray ( ) );
 	}
 
 	private: System::Void cbOwner_Fetch ( )
 	{
-		auto names = CLibDBManager::getStaff ( );
 		cbOwner->Items->Clear ( );
-		cbOwner->Items->AddRange ( names->ToArray ( ) );
+		cbOwner->Items->AddRange ( CLibDBManager::getStaff ( )->ToArray ( ) );
 	}
 
 	private: System::Void cbBookName_Fetch ( )
 	{
-		auto names = CLibDBManager::getBooks ( );
 		cbBookName->Items->Clear ( );
-		cbBookName->Items->AddRange ( names->ToArray ( ) );
+		cbBookName->Items->AddRange ( CLibDBManager::getBooks ( )->ToArray ( ) );
 	}
 
 	private: System::Void BooksUI_Shown ( System::Object^  sender, System::EventArgs^  e )
@@ -384,8 +430,7 @@ namespace LibraryMgmt
 
 	public: void UpdateConstraints ( )
 	{
-		// TODO
-		DSFILTER = "ID >=1 ";
+		DSFILTER = "ID >= 1 ";
 		if ( !String::IsNullOrEmpty ( book_name ) )
 			DSFILTER += "AND Book = '" + book_name + "' ";
 		if ( !String::IsNullOrEmpty ( author_name ) )
@@ -396,22 +441,19 @@ namespace LibraryMgmt
 
 	private: System::Void btBookName_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
-		auto index = cbBookName->SelectedIndex;
-		book_name = ( index == -1 ) ? "" : cbBookName->Text;
+		book_name = ( cbBookName->SelectedIndex == -1 ) ? "" : cbBookName->Text;
 		UpdateConstraints ( );
 	}
 
 	private: System::Void btAuthor_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
-		auto index = cbAuthor->SelectedIndex;
-		author_name = ( index == -1 ) ? "" : cbAuthor->Text;
+		author_name = ( cbAuthor->SelectedIndex == -1 ) ? "" : cbAuthor->Text;
 		UpdateConstraints ( );
 	}
 
 	private: System::Void btOwner_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
-		auto index = cbOwner->SelectedIndex;
-		owner_name = ( index == -1 ) ? "" : cbOwner->Text;
+		owner_name = ( cbOwner->SelectedIndex == -1 ) ? "" : cbOwner->Text;
 		UpdateConstraints ( );
 	}
 
@@ -450,7 +492,7 @@ namespace LibraryMgmt
 		int id = Convert::ToInt32 ( dgvBooks->CurrentRow->Cells[ "ID" ]->Value );
 		auto result = MessageBox::Show ( "This operation is irreversible.\n"
 										 "Proceed?", "Delete Book", MessageBoxButtons::YesNo,
-									 MessageBoxIcon::Question, MessageBoxDefaultButton::Button2 );
+										 MessageBoxIcon::Question, MessageBoxDefaultButton::Button2 );
 		if ( result == System::Windows::Forms::DialogResult::Yes )
 		{
 			CDBManager::nonQuery ( "DELETE FROM library WHERE id = " + id.ToString ( ) );
@@ -465,12 +507,45 @@ namespace LibraryMgmt
 		int id = Convert::ToInt32 ( dgvBooks->CurrentRow->Cells[ "ID" ]->Value );
 		btIssue->Text = ( Convert::ToBoolean ( dgvBooks->CurrentRow->Cells[ "Available" ]->Value ) ) ?
 			"Issue" : "Return";
+		issueToolStripMenuItem->Text = btIssue->Text;
 	}
 
 	private: System::Void dgvBooks_CellDoubleClick ( System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e )
 	{
 		btIssue->PerformClick ( );
 	}
+	private: System::Void dgvBooks_KeyPress ( System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e )
+	{
+		if ( e->KeyChar == (char) Keys::Return ||
+			 e->KeyChar == (char) Keys::Space )
+			 btIssue->PerformClick ( );
+		else if ( Char::ToUpper ( e->KeyChar ) == (char) Keys::D )
+			btDelete->PerformClick ( );
+	}
+
+	private: System::Void menuItemIssue_Click ( System::Object^  sender, System::EventArgs^  e )
+	{
+		btIssue->PerformClick ( );
+	}
+
+	private: System::Void issueHistoryToolStripMenuItem_Click ( System::Object^  sender, System::EventArgs^  e )
+	{
+		String ^book = Convert::ToString ( dgvBooks->CurrentRow->Cells[ "Book" ]->Value );
+		String ^author = Convert::ToString ( dgvBooks->CurrentRow->Cells[ "Author" ]->Value );
+		if ( !issueHistoryUI->Visible )
+		{
+			issueHistoryUI = gcnew IssueHistoryUI ( );
+			issueHistoryUI->Show ( );
+		}
+		issueHistoryUI->Focus ( );
+		String ^constraint = "Book = '" + book + "' AND Author = '" + author + "'";
+		issueHistoryUI->dsHistory->Tables[ 0 ]->DefaultView->RowFilter = constraint;
+	}
+
+	private: System::Void deleteToolStripMenuItem_Click ( System::Object^  sender, System::EventArgs^  e )
+	{
+		btDelete->PerformClick ( );
+	}
 #undef DSFILTER
-};
+	};
 }

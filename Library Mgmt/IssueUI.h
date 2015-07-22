@@ -167,7 +167,7 @@ namespace LibraryMgmt
 				static_cast<System::Byte>( 0 ) ) );
 			this->gbStudents->Location = System::Drawing::Point ( 12, 12 );
 			this->gbStudents->Name = L"gbStudents";
-			this->gbStudents->Size = System::Drawing::Size ( 286, 311 );
+			this->gbStudents->Size = System::Drawing::Size ( 292, 311 );
 			this->gbStudents->TabIndex = 11;
 			this->gbStudents->TabStop = false;
 			this->gbStudents->Text = L"Student";
@@ -178,10 +178,10 @@ namespace LibraryMgmt
 			this->gbStaff->Controls->Add ( this->cbStaffID );
 			this->gbStaff->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>( 0 ) ) );
-			this->gbStaff->Location = System::Drawing::Point ( 304, 12 );
+			this->gbStaff->Location = System::Drawing::Point ( 310, 12 );
 			this->gbStaff->Name = L"gbStaff";
 			this->gbStaff->RightToLeft = System::Windows::Forms::RightToLeft::No;
-			this->gbStaff->Size = System::Drawing::Size ( 286, 311 );
+			this->gbStaff->Size = System::Drawing::Size ( 292, 311 );
 			this->gbStaff->TabIndex = 12;
 			this->gbStaff->TabStop = false;
 			this->gbStaff->Text = L"Staff";
@@ -191,7 +191,7 @@ namespace LibraryMgmt
 			this->AutoScaleDimensions = System::Drawing::SizeF ( 6, 13 );
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ControlDarkDark;
-			this->ClientSize = System::Drawing::Size ( 597, 332 );
+			this->ClientSize = System::Drawing::Size ( 614, 332 );
 			this->Controls->Add ( this->gbStaff );
 			this->Controls->Add ( this->gbStudents );
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::Fixed3D;
@@ -273,7 +273,13 @@ namespace LibraryMgmt
 
 	private: System::Void btStaff_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
+		errorProvider->Clear ( );
 		String ^name = cbStaffID->Text;
+		if ( String::IsNullOrEmpty ( name ) )
+		{
+			errorProvider->SetError ( cbStaffID, "Cannot be blank." );
+			return;
+		}
 		int staff_id = CLibDBManager::addStaff ( name );
 		CDBManager::insert ( "issue_history", "lib_id, staff_id, issue_date",
 							 lib_id, staff_id, ( gcnew DateTime ( ) )->Now );

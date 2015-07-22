@@ -22,10 +22,7 @@ namespace LibraryMgmt {
 			auto res = gcnew Resources::ResXResourceSet ( "./Resource.resx" );
 			this->Icon = cli::safe_cast<Drawing::Icon^> ( res->GetObject ( "Icon", true ) );
 			InitializeComponent ( );
-			MySqlDataAdapter ^adapter = CDBManager::getAdapter ( "SELECT * FROM view_issue_history" );
-			dsHistory->Clear ( );
-			adapter->Fill ( dsHistory );
-			dgvHistory->DataSource = dsHistory->Tables[ 0 ];
+			refresh ( );
 		}
 
 	protected:
@@ -40,8 +37,7 @@ namespace LibraryMgmt {
 			}
 		}
 	public: System::Windows::Forms::DataGridView^  dgvHistory;
-	protected:
-	private: System::Data::DataSet^  dsHistory;
+	public: System::Data::DataSet^  dsHistory;
 	private:
 		/// <summary>
 		/// Required designer variable.
@@ -125,11 +121,25 @@ namespace LibraryMgmt {
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::Fixed3D;
 			this->Name = L"IssueHistoryUI";
 			this->Text = L"Issue History";
+			this->Shown += gcnew System::EventHandler ( this, &IssueHistoryUI::IssueHistoryUI_Shown );
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->dgvHistory ) )->EndInit ( );
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->dsHistory ) )->EndInit ( );
 			this->ResumeLayout ( false );
 
 		}
 #pragma endregion
-	};
+
+	public: void refresh ( )
+	{
+		MySqlDataAdapter ^adapter = CDBManager::getAdapter ( "SELECT * FROM view_issue_history" );
+		dsHistory->Clear ( );
+		adapter->Fill ( dsHistory );
+		dgvHistory->DataSource = dsHistory->Tables[ 0 ];
+	}
+
+	private: System::Void IssueHistoryUI_Shown ( System::Object^  sender, System::EventArgs^  e )
+	{ 
+		refresh ( );
+	}
+};
 }
