@@ -34,11 +34,10 @@ namespace LibraryMgmt
 	public:
 		BooksUI ( void )
 		{
-			auto res = gcnew Resources::ResXResourceSet ( "./Resource.resx" );
-			this->Icon = cli::safe_cast<Drawing::Icon^> ( res->GetObject ( "Icon", true ) );
 			InitializeComponent ( );
 			issueUI = gcnew IssueUI ( 0, dgvBooks );
 			issueHistoryUI = gcnew IssueHistoryUI ( );
+			this->Icon = CDummy::gIcon;
 		}
 
 	protected:

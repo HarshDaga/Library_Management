@@ -3,6 +3,7 @@
 #include "BooksUI.h"
 #include "IssueHistoryUI.h"
 #include "common.h"
+#include "CDummy.h"
 
 namespace LibraryMgmt {
 
@@ -31,17 +32,17 @@ namespace LibraryMgmt {
 	public:
 		MainUI(void)
 		{
-			InitializeComponent();
-			auto res = gcnew Resources::ResXResourceSet ( "./Resource.resx" );
-			this->Icon = cli::safe_cast<Drawing::Icon^> ( res->GetObject ( "Icon", true ) );
+			InitializeComponent ( );
 			try
 			{
+				CDummy ( );
+				this->Icon = CDummy::gIcon;
 				CDBManager::CDBManager ( );
 			}
 			catch ( MySql::Data::MySqlClient::MySqlException ^e )
 			{
 				slblConnected->ForeColor = System::Drawing::Color::DarkRed;
-				slblConnected->Text = e->InnerException->Message;
+				slblConnected->Text = e->Message;
 				btBooks->Enabled = false;
 				btFaculty->Enabled = false;
 				btHistory->Enabled = false;

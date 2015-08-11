@@ -29,11 +29,10 @@ namespace LibraryMgmt
 	public:
 		IssueUI ( int lib_id, DataGridView ^dgvBooks )
 		{
-			auto res = gcnew ResXResourceSet ( "./Resource.resx" );
-			this->Icon = cli::safe_cast<Drawing::Icon^> ( res->GetObject ( "Icon", true ) );
 			this->dgvBooks = dgvBooks;
 			this->lib_id = lib_id;
 			InitializeComponent ( );
+			this->Icon = CDummy::gIcon;
 		}
 
 	protected:

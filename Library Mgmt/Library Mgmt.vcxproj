@@ -95,6 +95,9 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="common.h" />
+    <ClInclude Include="CDummy.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="FacultyUI.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -113,6 +116,9 @@
     <EmbeddedResource Include="BooksUI.resx">
       <DependentUpon>BooksUI.h</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CDummy.resx">
+      <DependentUpon>CDummy.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FacultyUI.resx">
       <DependentUpon>FacultyUI.h</DependentUpon>
     </EmbeddedResource>
@@ -125,18 +131,9 @@
     <EmbeddedResource Include="MainUI.resx">
       <DependentUpon>MainUI.h</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resource.resx">
-      <LogicalName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resource</LogicalName>
-      <LogicalName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Resource</LogicalName>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Icon.ico" />
+    <Image Include="$this.Icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Library Mgmt.rc" />

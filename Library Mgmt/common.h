@@ -1,4 +1,5 @@
 #pragma once
+#include "CDummy.h"
 
 using namespace System;
 using namespace System::IO;
@@ -271,3 +272,20 @@ public:
 		return category_id;
 	}
 };
+
+//public ref class CDummy : public System::Windows::Forms::Form
+//{
+//public:
+//	static System::Drawing::Icon ^gIcon;
+//	static System::ComponentModel::ComponentResourceManager ^imgRes;
+//
+//	CDummy ( )
+//	{
+//		if ( gIcon )
+//			return;
+//		imgRes = ( gcnew System::ComponentModel::ComponentResourceManager ( CDummy::typeid ) );
+//
+//		auto res = gcnew Resources::ResXResourceSet ( "./Resource.resx" );
+//		this->gIcon = cli::safe_cast<Drawing::Icon^> ( res->GetObject ( "Icon", true ) );
+//	}
+//};

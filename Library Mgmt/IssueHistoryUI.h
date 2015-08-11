@@ -19,9 +19,8 @@ namespace LibraryMgmt {
 	public:
 		IssueHistoryUI(void)
 		{
-			auto res = gcnew Resources::ResXResourceSet ( "./Resource.resx" );
-			this->Icon = cli::safe_cast<Drawing::Icon^> ( res->GetObject ( "Icon", true ) );
 			InitializeComponent ( );
+			this->Icon = CDummy::gIcon;
 			refresh ( );
 		}
 
