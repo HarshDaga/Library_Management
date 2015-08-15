@@ -238,7 +238,8 @@ namespace LibraryMgmt
 		String ^author = cbAuthor->Text;
 		String ^category = cbCategory->Text;
 		String ^owner = cbOwner->Text;
-		int author_id, book_id, owner_id, category_id, status = 0;
+		int author_id, book_id, owner_id, category_id, status;
+		author_id = book_id = owner_id = category_id = status = 0;
 
 		if ( !( String::IsNullOrEmpty ( author ) ) )
 		{

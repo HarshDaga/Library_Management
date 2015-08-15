@@ -4,6 +4,7 @@
 using namespace LibraryMgmt;
 
 [STAThreadAttribute ( )]
+#pragma warning(suppress: 28251)
 int WINAPI WinMain ( HINSTANCE hInstance,
 					 HINSTANCE hPrevInstance,
 					 LPSTR lpCmdLine,

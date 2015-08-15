@@ -30,9 +30,15 @@
     <EmbeddedResource Include="IssueHistoryUI.resx">
       <Filter>Resource Files</Filter>
     </EmbeddedResource>
+    <EmbeddedResource Include="CDummy.resx">
+      <Filter>Resource Files</Filter>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalSuppressions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
