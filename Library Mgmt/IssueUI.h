@@ -20,19 +20,24 @@ namespace LibraryMgmt
 	public:
 		int lib_id, student_id, staff_id;
 		DataGridView ^dgvBooks;
+		bool isRequest;
 	private: System::Windows::Forms::ErrorProvider^  errorProvider;
-	private: System::Windows::Forms::GroupBox^  gbStaff;
+
 	private: System::Windows::Forms::GroupBox^  gbStudents;
 	private: System::Windows::Forms::ToolTip^  toolTip;
+	private: System::Data::DataSet^  dsBooks;
 
 	private: System::Windows::Forms::TextBox^  tbStudentName;
 	public:
-		IssueUI ( int lib_id, DataGridView ^dgvBooks )
+		IssueUI ( int lib_id, DataGridView ^dgvBooks, bool isRequest )
 		{
 			this->dgvBooks = dgvBooks;
 			this->lib_id = lib_id;
+			this->isRequest = isRequest;
 			InitializeComponent ( );
 			this->Icon = CDummy::gIcon;
+			if ( isRequest )
+				btIssue->Text = "Request";
 		}
 
 	protected:
@@ -47,9 +52,8 @@ namespace LibraryMgmt
 			}
 		}
 	private: System::Windows::Forms::ComboBox^  cbStudentID;
-	private: System::Windows::Forms::ComboBox^  cbStaffID;
-	private: System::Windows::Forms::Button^  btStudent;
-	private: System::Windows::Forms::Button^  btStaff;
+	private: System::Windows::Forms::Button^  btIssue;
+
 	private: System::ComponentModel::IContainer^  components;
 
 	private:
@@ -67,17 +71,15 @@ namespace LibraryMgmt
 		{
 			this->components = ( gcnew System::ComponentModel::Container ( ) );
 			this->cbStudentID = ( gcnew System::Windows::Forms::ComboBox ( ) );
-			this->cbStaffID = ( gcnew System::Windows::Forms::ComboBox ( ) );
-			this->btStudent = ( gcnew System::Windows::Forms::Button ( ) );
-			this->btStaff = ( gcnew System::Windows::Forms::Button ( ) );
+			this->btIssue = ( gcnew System::Windows::Forms::Button ( ) );
 			this->tbStudentName = ( gcnew System::Windows::Forms::TextBox ( ) );
 			this->errorProvider = ( gcnew System::Windows::Forms::ErrorProvider ( this->components ) );
 			this->gbStudents = ( gcnew System::Windows::Forms::GroupBox ( ) );
-			this->gbStaff = ( gcnew System::Windows::Forms::GroupBox ( ) );
 			this->toolTip = ( gcnew System::Windows::Forms::ToolTip ( this->components ) );
+			this->dsBooks = ( gcnew System::Data::DataSet ( ) );
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->errorProvider ) )->BeginInit ( );
 			this->gbStudents->SuspendLayout ( );
-			this->gbStaff->SuspendLayout ( );
+			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->dsBooks ) )->BeginInit ( );
 			this->SuspendLayout ( );
 			// 
 			// cbStudentID
@@ -86,70 +88,42 @@ namespace LibraryMgmt
 			this->cbStudentID->AutoCompleteMode = System::Windows::Forms::AutoCompleteMode::SuggestAppend;
 			this->cbStudentID->AutoCompleteSource = System::Windows::Forms::AutoCompleteSource::ListItems;
 			this->cbStudentID->BackColor = System::Drawing::SystemColors::ControlLightLight;
-			this->cbStudentID->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 8.25F ) );
+			this->cbStudentID->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+																	  static_cast<System::Byte>( 0 ) ) );
 			this->cbStudentID->FormattingEnabled = true;
 			this->cbStudentID->Location = System::Drawing::Point ( 6, 99 );
 			this->cbStudentID->Name = L"cbStudentID";
-			this->cbStudentID->Size = System::Drawing::Size ( 272, 21 );
+			this->cbStudentID->Size = System::Drawing::Size ( 395, 28 );
 			this->cbStudentID->Sorted = true;
 			this->cbStudentID->TabIndex = 6;
 			this->toolTip->SetToolTip ( this->cbStudentID, L"Student roll no." );
 			this->cbStudentID->TextChanged += gcnew System::EventHandler ( this, &IssueUI::cbStudentID_TextChanged );
 			// 
-			// cbStaffID
+			// btIssue
 			// 
-			this->cbStaffID->AllowDrop = true;
-			this->cbStaffID->AutoCompleteMode = System::Windows::Forms::AutoCompleteMode::SuggestAppend;
-			this->cbStaffID->AutoCompleteSource = System::Windows::Forms::AutoCompleteSource::ListItems;
-			this->cbStaffID->BackColor = System::Drawing::SystemColors::ControlLightLight;
-			this->cbStaffID->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 8.25F ) );
-			this->cbStaffID->FormattingEnabled = true;
-			this->cbStaffID->Location = System::Drawing::Point ( 6, 99 );
-			this->cbStaffID->Name = L"cbStaffID";
-			this->cbStaffID->Size = System::Drawing::Size ( 272, 21 );
-			this->cbStaffID->Sorted = true;
-			this->cbStaffID->TabIndex = 9;
-			this->toolTip->SetToolTip ( this->cbStaffID, L"Professor name." );
-			// 
-			// btStudent
-			// 
-			this->btStudent->BackColor = System::Drawing::SystemColors::ControlDark;
-			this->btStudent->FlatAppearance->BorderSize = 0;
-			this->btStudent->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btStudent->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>( 0 ) ) );
-			this->btStudent->Location = System::Drawing::Point ( 52, 164 );
-			this->btStudent->Name = L"btStudent";
-			this->btStudent->Size = System::Drawing::Size ( 181, 69 );
-			this->btStudent->TabIndex = 8;
-			this->btStudent->Text = L"Student";
-			this->toolTip->SetToolTip ( this->btStudent, L"Issue the book as a student." );
-			this->btStudent->UseVisualStyleBackColor = false;
-			this->btStudent->Click += gcnew System::EventHandler ( this, &IssueUI::btStudent_Click );
-			// 
-			// btStaff
-			// 
-			this->btStaff->BackColor = System::Drawing::SystemColors::ControlDark;
-			this->btStaff->FlatAppearance->BorderSize = 0;
-			this->btStaff->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btStaff->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>( 0 ) ) );
-			this->btStaff->Location = System::Drawing::Point ( 56, 164 );
-			this->btStaff->Name = L"btStaff";
-			this->btStaff->Size = System::Drawing::Size ( 181, 69 );
-			this->btStaff->TabIndex = 10;
-			this->btStaff->Text = L"Professor";
-			this->toolTip->SetToolTip ( this->btStaff, L"Issue the book as a professor." );
-			this->btStaff->UseVisualStyleBackColor = false;
-			this->btStaff->Click += gcnew System::EventHandler ( this, &IssueUI::btStaff_Click );
+			this->btIssue->BackColor = System::Drawing::SystemColors::ControlDark;
+			this->btIssue->FlatAppearance->BorderSize = 0;
+			this->btIssue->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btIssue->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+																  static_cast<System::Byte>( 0 ) ) );
+			this->btIssue->Location = System::Drawing::Point ( 108, 164 );
+			this->btIssue->Name = L"btIssue";
+			this->btIssue->Size = System::Drawing::Size ( 181, 69 );
+			this->btIssue->TabIndex = 8;
+			this->btIssue->Text = L"Issue";
+			this->toolTip->SetToolTip ( this->btIssue, L"Issue the book as a student." );
+			this->btIssue->UseVisualStyleBackColor = false;
+			this->btIssue->Click += gcnew System::EventHandler ( this, &IssueUI::btIssue_Click );
 			// 
 			// tbStudentName
 			// 
 			this->tbStudentName->BackColor = System::Drawing::SystemColors::ControlLightLight;
 			this->tbStudentName->Enabled = false;
+			this->tbStudentName->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+																		static_cast<System::Byte>( 0 ) ) );
 			this->tbStudentName->Location = System::Drawing::Point ( 6, 47 );
 			this->tbStudentName->Name = L"tbStudentName";
-			this->tbStudentName->Size = System::Drawing::Size ( 272, 26 );
+			this->tbStudentName->Size = System::Drawing::Size ( 395, 31 );
 			this->tbStudentName->TabIndex = 7;
 			this->toolTip->SetToolTip ( this->tbStudentName, L"Add a student name if the student doesn\'t exist in the database." );
 			// 
@@ -159,39 +133,28 @@ namespace LibraryMgmt
 			// 
 			// gbStudents
 			// 
-			this->gbStudents->Controls->Add ( this->btStudent );
+			this->gbStudents->Controls->Add ( this->btIssue );
 			this->gbStudents->Controls->Add ( this->tbStudentName );
 			this->gbStudents->Controls->Add ( this->cbStudentID );
 			this->gbStudents->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>( 0 ) ) );
+																	 static_cast<System::Byte>( 0 ) ) );
 			this->gbStudents->Location = System::Drawing::Point ( 12, 12 );
 			this->gbStudents->Name = L"gbStudents";
-			this->gbStudents->Size = System::Drawing::Size ( 292, 311 );
+			this->gbStudents->Size = System::Drawing::Size ( 407, 311 );
 			this->gbStudents->TabIndex = 11;
 			this->gbStudents->TabStop = false;
 			this->gbStudents->Text = L"Student";
 			// 
-			// gbStaff
+			// dsBooks
 			// 
-			this->gbStaff->Controls->Add ( this->btStaff );
-			this->gbStaff->Controls->Add ( this->cbStaffID );
-			this->gbStaff->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>( 0 ) ) );
-			this->gbStaff->Location = System::Drawing::Point ( 310, 12 );
-			this->gbStaff->Name = L"gbStaff";
-			this->gbStaff->RightToLeft = System::Windows::Forms::RightToLeft::No;
-			this->gbStaff->Size = System::Drawing::Size ( 292, 311 );
-			this->gbStaff->TabIndex = 12;
-			this->gbStaff->TabStop = false;
-			this->gbStaff->Text = L"Staff";
+			this->dsBooks->DataSetName = L"NewDataSet";
 			// 
 			// IssueUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF ( 6, 13 );
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ControlDarkDark;
-			this->ClientSize = System::Drawing::Size ( 614, 332 );
-			this->Controls->Add ( this->gbStaff );
+			this->ClientSize = System::Drawing::Size ( 432, 332 );
 			this->Controls->Add ( this->gbStudents );
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::Fixed3D;
 			this->Name = L"IssueUI";
@@ -200,38 +163,27 @@ namespace LibraryMgmt
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->errorProvider ) )->EndInit ( );
 			this->gbStudents->ResumeLayout ( false );
 			this->gbStudents->PerformLayout ( );
-			this->gbStaff->ResumeLayout ( false );
+			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->dsBooks ) )->EndInit ( );
 			this->ResumeLayout ( false );
 
 		}
 #pragma endregion
 
-	public:
-		void cbStudentID_Fetch ( )
-		{
-			auto names = CLibDBManager::getStudents ( );
-			cbStudentID->Items->Clear ( );
-			cbStudentID->Items->AddRange ( names->ToArray ( ) );
-		}
-
-		void cbOwner_Fetch ( )
-		{
-			auto names = CLibDBManager::getStaff ( );
-			cbStaffID->Items->Clear ( );
-			cbStaffID->Items->AddRange ( names->ToArray ( ) );
-		}
+	public: void cbStudentID_Fetch ( )
+	{
+		auto names = CLibDBManager::getStudents ( );
+		cbStudentID->Items->Clear ( );
+		cbStudentID->Items->AddRange ( names->ToArray ( ) );
+	}
 
 	private: System::Void IssueUI_Shown ( System::Object^  sender, System::EventArgs^  e )
 	{
 		cbStudentID_Fetch ( );
-		cbOwner_Fetch ( );
 	}
 
-	public: void finishIssue ( )
+	public: void updateBooksUI ( )
 	{
 		MySqlDataAdapter ^adapter = CDBManager::getAdapter ( "SELECT * FROM view_library ORDER BY id" );
-		DataSet ^dsBooks = gcnew DataSet ( );
-		dsBooks->BeginInit ( );
 		dsBooks->Clear ( );
 		adapter->Fill ( dsBooks );
 		auto table = dsBooks->Tables[ 0 ];
@@ -241,12 +193,9 @@ namespace LibraryMgmt
 			table->Columns[ "Status" ]->Expression = "IIF(Available=1, 'Available', 'Issued')";
 		}
 		dgvBooks->DataSource = table;
-		MessageBox::Show ( "Succesfully issued.", "Issued",
-						   MessageBoxButtons::OK, MessageBoxIcon::Asterisk );
-		this->Close ( );
 	}
 
-	private: System::Void btStudent_Click ( System::Object^  sender, System::EventArgs^  e )
+	private: System::Void btIssue_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
 		errorProvider->Clear ( );
 		String ^student_id = cbStudentID->Text;
@@ -265,24 +214,32 @@ namespace LibraryMgmt
 			}
 			CLibDBManager::addStudent ( student_id, student_name );
 		}
-		CDBManager::insert ( "issue_history", "lib_id, student_id, issue_date",
-							 lib_id, student_id, ( gcnew DateTime ( ) )->Now );
-		finishIssue ( );
-	}
-
-	private: System::Void btStaff_Click ( System::Object^  sender, System::EventArgs^  e )
-	{
-		errorProvider->Clear ( );
-		String ^name = cbStaffID->Text;
-		if ( String::IsNullOrEmpty ( name ) )
+		if ( isRequest )
 		{
-			errorProvider->SetError ( cbStaffID, "Cannot be blank." );
-			return;
+			auto exists = CDBManager::scalar <unsigned> ( "SELECT 1 FROM request_queue WHERE lib_id=" + lib_id +
+														  " AND student_id='" + student_id + "'" );
+			if ( exists )
+			{
+				MessageBox::Show ( "You're already in the queue!", "Oops..",
+								   MessageBoxButtons::OK, MessageBoxIcon::Exclamation );
+				return;
+			}
+			CDBManager::insert ( "request_queue", "lib_id, student_id",
+								 lib_id, student_id );
+			auto pos = CDBManager::scalar<unsigned> ( "SELECT COUNT(1) FROM request_queue WHERE lib_id=" +
+													  lib_id );
+			MessageBox::Show ( "You're at queue position: " + pos, "Requested",
+							   MessageBoxButtons::OK, MessageBoxIcon::Asterisk );
 		}
-		int staff_id = CLibDBManager::addStaff ( name );
-		CDBManager::insert ( "issue_history", "lib_id, staff_id, issue_date",
-							 lib_id, staff_id, ( gcnew DateTime ( ) )->Now );
-		finishIssue ( );
+		else
+		{
+			CDBManager::insert ( "issue_history", "lib_id, student_id, issue_date",
+								 lib_id, student_id, ( gcnew DateTime ( ) )->Now );
+			MessageBox::Show ( "Successfully issued.", "Issued",
+							   MessageBoxButtons::OK, MessageBoxIcon::Asterisk );
+		}
+		updateBooksUI ( );
+		this->Close ( );
 	}
 
 	private: System::Void cbStudentID_TextChanged ( System::Object^  sender, System::EventArgs^  e )

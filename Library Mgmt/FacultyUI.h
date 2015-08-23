@@ -264,6 +264,10 @@ namespace LibraryMgmt
 		if ( author_id && book_id && owner_id && category_id )
 			CDBManager::insert ( "library", "book_id, author_id, owner_id, category_id",
 								 book_id, author_id, owner_id, category_id );
+		cbBookName->Text = "";
+		cbAuthor->Text = "";
+		cbCategory->Text = "";
+		cbOwner->Text = "";
 	}
 
 	private: System::Void cbAuthor_Fetch ( )

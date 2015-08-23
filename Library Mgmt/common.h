@@ -57,12 +57,18 @@ public:
 		return reader = cmd->ExecuteReader ( );
 	}
 
-	static Object^ scalar ( String ^cmdText )
+	template<typename T>
+	static T scalar ( String ^cmdText )
 	{
 		if ( reader && !reader->IsClosed )
 			reader->Close ( );
 		MySqlCommand ^cmd = gcnew MySqlCommand ( cmdText, connection );
-		return cmd->ExecuteScalar ( );
+		auto result = cmd->ExecuteScalar ( );
+		if ( !result )
+			return NULL;
+		return Convert::IsDBNull ( result ) ?
+			NULL :
+			static_cast<T>( Convert::ChangeType ( result, T::typeid ) );
 	}
 
 	static MySqlDataAdapter^ getAdapter ( String ^cmdText )

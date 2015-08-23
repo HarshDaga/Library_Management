@@ -166,7 +166,7 @@ namespace LibraryMgmt {
 		{
 			row->DefaultCellStyle->ForeColor =
 				( ( Convert::ToInt32 ( row->Cells[ "Duration" ]->Value ) > 7 ) &&
-				  ( String::IsNullOrEmpty ( row->Cells[ "Return_Date" ]->Value->ToString ( ) ) )
+				  ( Convert::IsDBNull ( row->Cells[ "Return_Date" ]->Value ) )
 				  ) ?
 				Color::DarkRed : Color::Black;
 		}

@@ -29,13 +29,15 @@ namespace LibraryMgmt
 
 	private: System::Windows::Forms::ToolStripMenuItem^  issueHistoryToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^  deleteToolStripMenuItem;
+	private: System::Windows::Forms::Button^  btRequest;
+	private: System::Windows::Forms::ToolStripMenuItem^  requestToolStripMenuItem;
 
 	private: System::Windows::Forms::Button^  btDelete;
 	public:
 		BooksUI ( void )
 		{
 			InitializeComponent ( );
-			issueUI = gcnew IssueUI ( 0, dgvBooks );
+			issueUI = gcnew IssueUI ( 0, dgvBooks, false );
 			issueHistoryUI = gcnew IssueHistoryUI ( );
 			this->Icon = CDummy::gIcon;
 		}
@@ -91,6 +93,7 @@ namespace LibraryMgmt
 			this->dgvBooks = ( gcnew System::Windows::Forms::DataGridView ( ) );
 			this->contextMenuStrip = ( gcnew System::Windows::Forms::ContextMenuStrip ( this->components ) );
 			this->issueToolStripMenuItem = ( gcnew System::Windows::Forms::ToolStripMenuItem ( ) );
+			this->requestToolStripMenuItem = ( gcnew System::Windows::Forms::ToolStripMenuItem ( ) );
 			this->issueHistoryToolStripMenuItem = ( gcnew System::Windows::Forms::ToolStripMenuItem ( ) );
 			this->deleteToolStripMenuItem = ( gcnew System::Windows::Forms::ToolStripMenuItem ( ) );
 			this->dsBooks = ( gcnew System::Data::DataSet ( ) );
@@ -105,6 +108,7 @@ namespace LibraryMgmt
 			this->btIssue = ( gcnew System::Windows::Forms::Button ( ) );
 			this->btDelete = ( gcnew System::Windows::Forms::Button ( ) );
 			this->toolTip = ( gcnew System::Windows::Forms::ToolTip ( this->components ) );
+			this->btRequest = ( gcnew System::Windows::Forms::Button ( ) );
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->dgvBooks ) )->BeginInit ( );
 			this->contextMenuStrip->SuspendLayout ( );
 			( cli::safe_cast<System::ComponentModel::ISupportInitialize^>( this->dsBooks ) )->BeginInit ( );
@@ -157,7 +161,7 @@ namespace LibraryMgmt
 			this->dgvBooks->RowHeadersWidthSizeMode = System::Windows::Forms::DataGridViewRowHeadersWidthSizeMode::DisableResizing;
 			this->dgvBooks->RowTemplate->Resizable = System::Windows::Forms::DataGridViewTriState::True;
 			this->dgvBooks->SelectionMode = System::Windows::Forms::DataGridViewSelectionMode::FullRowSelect;
-			this->dgvBooks->Size = System::Drawing::Size ( 1010, 406 );
+			this->dgvBooks->Size = System::Drawing::Size ( 1045, 406 );
 			this->dgvBooks->TabIndex = 0;
 			this->dgvBooks->TabStop = false;
 			this->toolTip->SetToolTip ( this->dgvBooks, L"Double Click or Return to Issue" );
@@ -167,13 +171,13 @@ namespace LibraryMgmt
 			// 
 			// contextMenuStrip
 			// 
-			this->contextMenuStrip->Items->AddRange ( gcnew cli::array< System::Windows::Forms::ToolStripItem^  > ( 3 )
+			this->contextMenuStrip->Items->AddRange ( gcnew cli::array< System::Windows::Forms::ToolStripItem^  > ( 4 )
 			{
 				this->issueToolStripMenuItem,
-					this->issueHistoryToolStripMenuItem, this->deleteToolStripMenuItem
+					this->requestToolStripMenuItem, this->issueHistoryToolStripMenuItem, this->deleteToolStripMenuItem
 			} );
 			this->contextMenuStrip->Name = L"contextMenuStrip";
-			this->contextMenuStrip->Size = System::Drawing::Size ( 170, 70 );
+			this->contextMenuStrip->Size = System::Drawing::Size ( 170, 114 );
 			// 
 			// issueToolStripMenuItem
 			// 
@@ -181,6 +185,13 @@ namespace LibraryMgmt
 			this->issueToolStripMenuItem->Size = System::Drawing::Size ( 169, 22 );
 			this->issueToolStripMenuItem->Text = L"Issue";
 			this->issueToolStripMenuItem->Click += gcnew System::EventHandler ( this, &BooksUI::menuItemIssue_Click );
+			// 
+			// requestToolStripMenuItem
+			// 
+			this->requestToolStripMenuItem->Name = L"requestToolStripMenuItem";
+			this->requestToolStripMenuItem->Size = System::Drawing::Size ( 169, 22 );
+			this->requestToolStripMenuItem->Text = L"Request";
+			this->requestToolStripMenuItem->Click += gcnew System::EventHandler ( this, &BooksUI::requestToolStripMenuItem_Click );
 			// 
 			// issueHistoryToolStripMenuItem
 			// 
@@ -241,7 +252,7 @@ namespace LibraryMgmt
 																   static_cast<System::Byte>( 0 ) ) );
 			this->btAuthor->Location = System::Drawing::Point ( 328, 19 );
 			this->btAuthor->Name = L"btAuthor";
-			this->btAuthor->Size = System::Drawing::Size ( 266, 55 );
+			this->btAuthor->Size = System::Drawing::Size ( 281, 55 );
 			this->btAuthor->TabIndex = 3;
 			this->btAuthor->Text = L"Author";
 			this->toolTip->SetToolTip ( this->btAuthor, L"Filter by author name." );
@@ -260,7 +271,7 @@ namespace LibraryMgmt
 																		static_cast<System::Byte>( 0 ) ) );
 			this->gbSearchBooks->Location = System::Drawing::Point ( 190, 12 );
 			this->gbSearchBooks->Name = L"gbSearchBooks";
-			this->gbSearchBooks->Size = System::Drawing::Size ( 832, 128 );
+			this->gbSearchBooks->Size = System::Drawing::Size ( 867, 128 );
 			this->gbSearchBooks->TabIndex = 6;
 			this->gbSearchBooks->TabStop = false;
 			this->gbSearchBooks->Text = L"Search Books";
@@ -272,9 +283,9 @@ namespace LibraryMgmt
 			this->cbOwner->BackColor = System::Drawing::SystemColors::ControlLightLight;
 			this->cbOwner->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 8.25F ) );
 			this->cbOwner->FormattingEnabled = true;
-			this->cbOwner->Location = System::Drawing::Point ( 600, 95 );
+			this->cbOwner->Location = System::Drawing::Point ( 615, 95 );
 			this->cbOwner->Name = L"cbOwner";
-			this->cbOwner->Size = System::Drawing::Size ( 226, 21 );
+			this->cbOwner->Size = System::Drawing::Size ( 246, 21 );
 			this->cbOwner->Sorted = true;
 			this->cbOwner->TabIndex = 7;
 			// 
@@ -285,9 +296,9 @@ namespace LibraryMgmt
 			this->btOwner->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btOwner->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 																  static_cast<System::Byte>( 0 ) ) );
-			this->btOwner->Location = System::Drawing::Point ( 600, 19 );
+			this->btOwner->Location = System::Drawing::Point ( 615, 19 );
 			this->btOwner->Name = L"btOwner";
-			this->btOwner->Size = System::Drawing::Size ( 226, 55 );
+			this->btOwner->Size = System::Drawing::Size ( 246, 55 );
 			this->btOwner->TabIndex = 4;
 			this->btOwner->Text = L"Owner";
 			this->toolTip->SetToolTip ( this->btOwner, L"Filter by owner name." );
@@ -303,7 +314,7 @@ namespace LibraryMgmt
 			this->cbAuthor->FormattingEnabled = true;
 			this->cbAuthor->Location = System::Drawing::Point ( 328, 95 );
 			this->cbAuthor->Name = L"cbAuthor";
-			this->cbAuthor->Size = System::Drawing::Size ( 266, 21 );
+			this->cbAuthor->Size = System::Drawing::Size ( 281, 21 );
 			this->cbAuthor->Sorted = true;
 			this->cbAuthor->TabIndex = 6;
 			// 
@@ -328,9 +339,9 @@ namespace LibraryMgmt
 			this->btIssue->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btIssue->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 																  static_cast<System::Byte>( 0 ) ) );
-			this->btIssue->Location = System::Drawing::Point ( 161, 581 );
+			this->btIssue->Location = System::Drawing::Point ( 12, 581 );
 			this->btIssue->Name = L"btIssue";
-			this->btIssue->Size = System::Drawing::Size ( 272, 55 );
+			this->btIssue->Size = System::Drawing::Size ( 294, 55 );
 			this->btIssue->TabIndex = 8;
 			this->btIssue->Text = L"Issue";
 			this->btIssue->UseVisualStyleBackColor = false;
@@ -346,21 +357,37 @@ namespace LibraryMgmt
 			this->btDelete->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 																   static_cast<System::Byte>( 0 ) ) );
 			this->btDelete->ForeColor = System::Drawing::Color::DarkRed;
-			this->btDelete->Location = System::Drawing::Point ( 579, 581 );
+			this->btDelete->Location = System::Drawing::Point ( 757, 581 );
 			this->btDelete->Name = L"btDelete";
-			this->btDelete->Size = System::Drawing::Size ( 272, 55 );
+			this->btDelete->Size = System::Drawing::Size ( 294, 55 );
 			this->btDelete->TabIndex = 9;
 			this->btDelete->Text = L"Delete";
 			this->toolTip->SetToolTip ( this->btDelete, L"Delete entry from database!" );
 			this->btDelete->UseVisualStyleBackColor = false;
 			this->btDelete->Click += gcnew System::EventHandler ( this, &BooksUI::btDelete_Click );
 			// 
+			// btRequest
+			// 
+			this->btRequest->BackColor = System::Drawing::SystemColors::ControlDark;
+			this->btRequest->FlatAppearance->BorderSize = 0;
+			this->btRequest->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btRequest->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+																	static_cast<System::Byte>( 0 ) ) );
+			this->btRequest->Location = System::Drawing::Point ( 390, 581 );
+			this->btRequest->Name = L"btRequest";
+			this->btRequest->Size = System::Drawing::Size ( 294, 55 );
+			this->btRequest->TabIndex = 10;
+			this->btRequest->Text = L"Request";
+			this->btRequest->UseVisualStyleBackColor = false;
+			this->btRequest->Click += gcnew System::EventHandler ( this, &BooksUI::btRequest_Click );
+			// 
 			// BooksUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF ( 6, 13 );
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ControlDarkDark;
-			this->ClientSize = System::Drawing::Size ( 1034, 648 );
+			this->ClientSize = System::Drawing::Size ( 1069, 648 );
+			this->Controls->Add ( this->btRequest );
 			this->Controls->Add ( this->btDelete );
 			this->Controls->Add ( this->btIssue );
 			this->Controls->Add ( this->gbSearchBooks );
@@ -462,24 +489,41 @@ namespace LibraryMgmt
 		int id = Convert::ToInt32 ( dgvBooks->CurrentRow->Cells[ "ID" ]->Value );
 		if ( btIssue->Text == "Return" )
 		{
-			auto reader = CDBManager::query ( "SELECT * FROM issue_history WHERE lib_id = " + id.ToString ( ) +
+			auto reader = CDBManager::query ( "SELECT * FROM issue_history WHERE lib_id = " + id +
 											  " AND return_date IS NULL" );
 			if ( reader->Read ( ) )
 			{
 				auto cmd = CDBManager::getCmd ( "UPDATE issue_history SET return_date = @return_date "
-												"WHERE lib_id = " + id.ToString ( ) );
+												"WHERE lib_id = " + id );
 				cmd->Prepare ( );
 				cmd->Parameters->AddWithValue ( "@return_date", ( gcnew DateTime ( ) )->Now );
 				cmd->ExecuteNonQuery ( );
 			}
-			refreshView ( );
 			MessageBox::Show ( "The book has been returned.", "Returned",
 							   MessageBoxButtons::OK, MessageBoxIcon::Asterisk );
+			reader = CDBManager::query ( "SELECT * FROM request_queue WHERE lib_id = " + id +
+										 " LIMIT 1" );
+			if ( reader->Read ( ) )
+			{
+				auto id_request = reader->GetInt32 ( 0 );
+				auto id_next_student = reader->GetString ( 2 );
+				reader = CDBManager::query ( "SELECT name FROM students WHERE id = '" + id_next_student + "'" );
+				if ( reader->Read ( ) )
+				{
+					auto student_name = reader->GetString ( 0 );
+					CDBManager::insert ( "issue_history", "lib_id, student_id, issue_date",
+										 id, id_next_student, ( gcnew DateTime ( ) )->Now );
+					CDBManager::nonQuery ( "DELETE FROM request_queue WHERE id = " + id_request );
+					MessageBox::Show ( "The book is now issued by: " + student_name, "Issued",
+									   MessageBoxButtons::OK, MessageBoxIcon::Asterisk );
+				}
+			}
+			refreshView ( );
 			return;
 		}
 		if ( !issueUI->Visible )
 		{
-			issueUI = gcnew IssueUI ( id, dgvBooks );
+			issueUI = gcnew IssueUI ( id, dgvBooks, false );
 			issueUI->Show ( );
 		}
 		else
@@ -495,7 +539,7 @@ namespace LibraryMgmt
 										 MessageBoxIcon::Question, MessageBoxDefaultButton::Button2 );
 		if ( result == System::Windows::Forms::DialogResult::Yes )
 		{
-			CDBManager::nonQuery ( "DELETE FROM library WHERE id = " + id.ToString ( ) );
+			CDBManager::nonQuery ( "DELETE FROM library WHERE id = " + id );
 			refreshView ( );
 		}
 	}
@@ -505,8 +549,18 @@ namespace LibraryMgmt
 		if ( !dgvBooks->CurrentRow )
 			return;
 		int id = Convert::ToInt32 ( dgvBooks->CurrentRow->Cells[ "ID" ]->Value );
-		btIssue->Text = ( Convert::ToBoolean ( dgvBooks->CurrentRow->Cells[ "Available" ]->Value ) ) ?
-			"Issue" : "Return";
+		if ( Convert::ToBoolean ( dgvBooks->CurrentRow->Cells[ "Available" ]->Value ) )
+		{
+			btIssue->Text = "Issue";
+			btRequest->Enabled = false;
+			requestToolStripMenuItem->Enabled = false;
+		}
+		else
+		{
+			btIssue->Text = "Return";
+			btRequest->Enabled = true;
+			requestToolStripMenuItem->Enabled = true;
+		}
 		issueToolStripMenuItem->Text = btIssue->Text;
 	}
 
@@ -540,6 +594,7 @@ namespace LibraryMgmt
 		issueHistoryUI->Focus ( );
 		String ^constraint = "Book = '" + book + "' AND Author = '" + author + "'";
 		issueHistoryUI->dsHistory->Tables[ 0 ]->DefaultView->RowFilter = constraint;
+		issueHistoryUI->colorRows ( );
 	}
 
 	private: System::Void deleteToolStripMenuItem_Click ( System::Object^  sender, System::EventArgs^  e )
@@ -547,5 +602,19 @@ namespace LibraryMgmt
 		btDelete->PerformClick ( );
 	}
 #undef DSFILTER
-	};
+
+	private: System::Void btRequest_Click ( System::Object^  sender, System::EventArgs^  e )
+	{
+		int id = Convert::ToInt32 ( dgvBooks->CurrentRow->Cells[ "ID" ]->Value );
+		issueUI->Close ( );
+		issueUI = gcnew IssueUI ( id, dgvBooks, true );
+		issueUI->Show ( );
+		issueUI->Focus ( );
+	}
+
+	private: System::Void requestToolStripMenuItem_Click ( System::Object^  sender, System::EventArgs^  e )
+	{
+		btRequest->PerformClick ( );
+	}
+};
 }
