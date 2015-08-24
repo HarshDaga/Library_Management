@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-08-24 02:16:24
+Date: 2015-08-24 23:08:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -253,7 +253,7 @@ CREATE TABLE `issue_history` (
   KEY `issue_date_idx` (`issue_date`) USING BTREE,
   CONSTRAINT `library_id_fk` FOREIGN KEY (`lib_id`) REFERENCES `library` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `student_id_fk` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of issue_history
@@ -263,8 +263,9 @@ INSERT INTO `issue_history` VALUES ('3', '49', '13102A0044', '2015-08-12 23:49:1
 INSERT INTO `issue_history` VALUES ('4', '59', '13102A0046', '2015-08-12 23:51:33', '2015-08-19 00:31:41');
 INSERT INTO `issue_history` VALUES ('5', '44', '13102A0035', '2015-08-12 23:53:17', null);
 INSERT INTO `issue_history` VALUES ('6', '51', '14102A0055', '2015-08-13 23:39:03', null);
-INSERT INTO `issue_history` VALUES ('7', '102', '13102A0064', '2015-08-13 23:44:26', null);
+INSERT INTO `issue_history` VALUES ('7', '102', '13102A0064', '2015-08-13 23:44:26', '2015-08-24 23:05:41');
 INSERT INTO `issue_history` VALUES ('8', '78', '13102A0035', '2015-08-13 23:46:50', '2015-08-18 23:55:36');
+INSERT INTO `issue_history` VALUES ('9', '102', '13102A0064', '2015-08-24 23:06:09', null);
 
 -- ----------------------------
 -- Table structure for library
@@ -418,6 +419,7 @@ CREATE TABLE `request_queue` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `lib_id` int(11) unsigned NOT NULL,
   `student_id` varchar(32) NOT NULL,
+  `request_date` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_student_id` (`student_id`),
   KEY `fl_lib_id` (`lib_id`),
@@ -491,16 +493,7 @@ staff.`name` AS `Owner`,
 students.`name` AS Student,
 issue_history.issue_date AS Issue_Date,
 issue_history.return_date AS Return_Date,
-TIMESTAMPDIFF(
-		DAY,
-		Issue_Date,
-
-	IF (
-		return_date IS NULL,
-		CURDATE(),
-		return_date
-	)
-	) AS Duration
+TIMESTAMPDIFF(DAY, Issue_Date, IF(return_date IS NULL, CURDATE(), return_date)) AS Duration
 FROM
 issue_history
 INNER JOIN library ON issue_history.lib_id = library.id
@@ -509,7 +502,7 @@ INNER JOIN `authors` ON library.author_id = `authors`.id
 INNER JOIN staff ON issue_history.lib_id = library.id AND library.owner_id = staff.id
 LEFT JOIN students ON issue_history.student_id = students.id
 ORDER BY
-	Issue_Date DESC ; ;
+	Issue_Date DESC ;
 
 -- ----------------------------
 -- View structure for view_library
@@ -538,12 +531,25 @@ categories.`name`,
 staff.`name`,
 library.available
 ORDER BY
-request_queue.id ASC ; ;
+request_queue.id ASC ;
 DROP TRIGGER IF EXISTS `Book_Issued`;
 DELIMITER ;;
 CREATE TRIGGER `Book_Issued` AFTER INSERT ON `issue_history` FOR EACH ROW UPDATE dept_library.library
 SET available = 0
 WHERE library.id = new.lib_id
-;
+;;
+DELIMITER ;
+DROP TRIGGER IF EXISTS `Book_Returned`;
+DELIMITER ;;
+CREATE TRIGGER `Book_Returned` AFTER UPDATE ON `issue_history` FOR EACH ROW UPDATE dept_library.library
+SET available = 1
+WHERE library.id = new.lib_id
+;;
+DELIMITER ;
+DROP TRIGGER IF EXISTS `Row_Deleted`;
+DELIMITER ;;
+CREATE TRIGGER `Row_Deleted` AFTER DELETE ON `issue_history` FOR EACH ROW UPDATE dept_library.library
+SET available = 1
+WHERE library.id = old.lib_id
 ;;
 DELIMITER ;
