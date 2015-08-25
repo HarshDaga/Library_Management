@@ -37,7 +37,7 @@ namespace LibraryMgmt
 		BooksUI ( void )
 		{
 			InitializeComponent ( );
-			issueUI = gcnew IssueUI ( 0, dgvBooks, false );
+			issueUI = gcnew IssueUI ( 0, dgvBooks, false, false );
 			issueHistoryUI = gcnew IssueHistoryUI ( );
 			this->Icon = CDummy::gIcon;
 		}
@@ -423,8 +423,35 @@ namespace LibraryMgmt
 		dgvBooks->Columns[ "Available" ]->Visible = false;
 	}
 
+	public: void deleteOldRequests()
+	{
+		auto to_delete = gcnew List<unsigned> ( );
+		auto reader = CDBManager::query ( "SELECT request_queue.id FROM request_queue "
+										  "INNER JOIN library ON request_queue.lib_id = library.id "
+										  "WHERE request_queue.request_date < "
+										  "DATE_SUB(NOW(), INTERVAL 7 DAY) AND "
+										  "library.available = 1 "
+										  "GROUP BY library.id ORDER BY request_queue.id ASC"
+										  );
+		while ( reader->Read ( ) )
+			to_delete->Add ( reader->GetUInt32 ( 0 ) );
+		for each ( auto id in to_delete )
+			CDBManager::nonQuery ( "DELETE FROM request_queue WHERE id = " + id );
+		auto to_reset = gcnew List<unsigned> ( );
+		reader = CDBManager::query ( "SELECT request_queue.id FROM request_queue "
+									 "INNER JOIN library ON request_queue.lib_id = library.id "
+									 "WHERE library.available = 1"
+									 );
+		while ( reader->Read ( ) )
+			to_reset->Add ( reader->GetUInt32 ( 0 ) );
+		for each ( auto id in to_reset )
+			CDBManager::update ( "request_queue", "id=" + id,
+								 "request_date", ( gcnew DateTime ( ) )->Now );
+	}
+
 	private: System::Void btReset_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
+		deleteOldRequests ( );
 		refreshView ( );
 		DSFILTER = "";
 	}
@@ -484,46 +511,45 @@ namespace LibraryMgmt
 		UpdateConstraints ( );
 	}
 
+	public: void dequeue( unsigned int id )
+	{
+		auto reader = CDBManager::query ( "SELECT * FROM request_queue WHERE lib_id = " + id +
+									 " ORDER BY id LIMIT 1" );
+		if ( reader->Read ( ) )
+		{
+			auto id_request = reader->GetInt32 ( 0 );
+			auto id_next_student = reader->GetString ( 2 );
+			auto reader2 = CDBManager::query ( "SELECT name FROM students WHERE id = '" + id_next_student + "'" );
+			if ( reader2->Read ( ) )
+			{
+				auto student_name = reader2->GetString ( 0 );
+				CDBManager::update ( "request_queue", "id = " + id_request,
+									 "request_date", ( gcnew DateTime ( ) )->Now );
+				MessageBox::Show ( "The book is now available for: " + student_name, "Available",
+									MessageBoxButtons::OK, MessageBoxIcon::Asterisk );
+			}
+		}
+	}
+
 	private: System::Void btIssue_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
-		int id = Convert::ToInt32 ( dgvBooks->CurrentRow->Cells[ "ID" ]->Value );
+		unsigned int id = Convert::ToInt32 ( dgvBooks->CurrentRow->Cells[ "ID" ]->Value );
 		if ( btIssue->Text == "Return" )
 		{
 			auto reader = CDBManager::query ( "SELECT * FROM issue_history WHERE lib_id = " + id +
 											  " AND return_date IS NULL" );
 			if ( reader->Read ( ) )
-			{
-				auto cmd = CDBManager::getCmd ( "UPDATE issue_history SET return_date = @return_date "
-												"WHERE lib_id = " + id );
-				cmd->Prepare ( );
-				cmd->Parameters->AddWithValue ( "@return_date", ( gcnew DateTime ( ) )->Now );
-				cmd->ExecuteNonQuery ( );
-			}
+				CDBManager::update ( "issue_history", "lib_id = " + id,
+									 "return_date", ( gcnew DateTime ( ) )->Now );
 			MessageBox::Show ( "The book has been returned.", "Returned",
 							   MessageBoxButtons::OK, MessageBoxIcon::Asterisk );
-			reader = CDBManager::query ( "SELECT * FROM request_queue WHERE lib_id = " + id +
-										 " LIMIT 1" );
-			if ( reader->Read ( ) )
-			{
-				auto id_request = reader->GetInt32 ( 0 );
-				auto id_next_student = reader->GetString ( 2 );
-				reader = CDBManager::query ( "SELECT name FROM students WHERE id = '" + id_next_student + "'" );
-				if ( reader->Read ( ) )
-				{
-					auto student_name = reader->GetString ( 0 );
-					CDBManager::insert ( "issue_history", "lib_id, student_id, issue_date",
-										 id, id_next_student, ( gcnew DateTime ( ) )->Now );
-					CDBManager::nonQuery ( "DELETE FROM request_queue WHERE id = " + id_request );
-					MessageBox::Show ( "The book is now issued by: " + student_name, "Issued",
-									   MessageBoxButtons::OK, MessageBoxIcon::Asterisk );
-				}
-			}
+			dequeue ( id );
 			refreshView ( );
 			return;
 		}
 		if ( !issueUI->Visible )
 		{
-			issueUI = gcnew IssueUI ( id, dgvBooks, false );
+			issueUI = gcnew IssueUI ( id, dgvBooks, false, btRequest->Enabled );
 			issueUI->Show ( );
 		}
 		else
@@ -548,16 +574,16 @@ namespace LibraryMgmt
 	{
 		if ( !dgvBooks->CurrentRow )
 			return;
-		int id = Convert::ToInt32 ( dgvBooks->CurrentRow->Cells[ "ID" ]->Value );
-		if ( Convert::ToBoolean ( dgvBooks->CurrentRow->Cells[ "Available" ]->Value ) )
+		unsigned in_queue = Convert::ToUInt32 ( dgvBooks->CurrentRow->Cells[ "In_Queue" ]->Value );
+		bool b_available = Convert::ToBoolean ( dgvBooks->CurrentRow->Cells[ "Available" ]->Value );
+		btIssue->Text = b_available ? "Issue" : "Return";
+		if ( b_available && !in_queue )
 		{
-			btIssue->Text = "Issue";
 			btRequest->Enabled = false;
 			requestToolStripMenuItem->Enabled = false;
 		}
 		else
 		{
-			btIssue->Text = "Return";
 			btRequest->Enabled = true;
 			requestToolStripMenuItem->Enabled = true;
 		}
@@ -607,7 +633,7 @@ namespace LibraryMgmt
 	{
 		int id = Convert::ToInt32 ( dgvBooks->CurrentRow->Cells[ "ID" ]->Value );
 		issueUI->Close ( );
-		issueUI = gcnew IssueUI ( id, dgvBooks, true );
+		issueUI = gcnew IssueUI ( id, dgvBooks, true, false );
 		issueUI->Show ( );
 		issueUI->Focus ( );
 	}

@@ -18,9 +18,9 @@ namespace LibraryMgmt
 	public ref class IssueUI : public System::Windows::Forms::Form
 	{
 	public:
-		int lib_id, student_id, staff_id;
+		int lib_id;
 		DataGridView ^dgvBooks;
-		bool isRequest;
+		bool isRequest, isQueued;
 	private: System::Windows::Forms::ErrorProvider^  errorProvider;
 
 	private: System::Windows::Forms::GroupBox^  gbStudents;
@@ -29,13 +29,15 @@ namespace LibraryMgmt
 
 	private: System::Windows::Forms::TextBox^  tbStudentName;
 	public:
-		IssueUI ( int lib_id, DataGridView ^dgvBooks, bool isRequest )
+		IssueUI ( int lib_id, DataGridView ^dgvBooks, bool isRequest, bool isQueued )
 		{
 			this->dgvBooks = dgvBooks;
 			this->lib_id = lib_id;
+			this->isQueued = isQueued;
 			this->isRequest = isRequest;
 			InitializeComponent ( );
 			this->Icon = CDummy::gIcon;
+			checkBookStatus ( );
 			if ( isRequest )
 				btIssue->Text = "Request";
 		}
@@ -195,6 +197,24 @@ namespace LibraryMgmt
 		dgvBooks->DataSource = table;
 	}
 
+	public: void handleRequest( String ^student_id )
+	{
+		auto exists = CDBManager::scalar <unsigned> ( "SELECT 1 FROM request_queue WHERE lib_id=" + lib_id +
+													  " AND student_id='" + student_id + "'" );
+		if ( exists )
+		{
+			MessageBox::Show ( "You're already in the queue!", "Oops..",
+							   MessageBoxButtons::OK, MessageBoxIcon::Exclamation );
+			return;
+		}
+		CDBManager::insert ( "request_queue", "lib_id, student_id, request_date",
+							 lib_id, student_id, ( gcnew DateTime ( ) )->Now );
+		auto pos = CDBManager::scalar <unsigned> ( "SELECT COUNT(1) FROM request_queue WHERE lib_id=" +
+												   lib_id );
+		MessageBox::Show ( "You're at queue position: " + pos, "Requested",
+						   MessageBoxButtons::OK, MessageBoxIcon::Asterisk );
+	}
+
 	private: System::Void btIssue_Click ( System::Object^  sender, System::EventArgs^  e )
 	{
 		errorProvider->Clear ( );
@@ -215,26 +235,13 @@ namespace LibraryMgmt
 			CLibDBManager::addStudent ( student_id, student_name );
 		}
 		if ( isRequest )
-		{
-			auto exists = CDBManager::scalar <unsigned> ( "SELECT 1 FROM request_queue WHERE lib_id=" + lib_id +
-														  " AND student_id='" + student_id + "'" );
-			if ( exists )
-			{
-				MessageBox::Show ( "You're already in the queue!", "Oops..",
-								   MessageBoxButtons::OK, MessageBoxIcon::Exclamation );
-				return;
-			}
-			CDBManager::insert ( "request_queue", "lib_id, student_id",
-								 lib_id, student_id );
-			auto pos = CDBManager::scalar<unsigned> ( "SELECT COUNT(1) FROM request_queue WHERE lib_id=" +
-													  lib_id );
-			MessageBox::Show ( "You're at queue position: " + pos, "Requested",
-							   MessageBoxButtons::OK, MessageBoxIcon::Asterisk );
-		}
+			handleRequest ( student_id );
 		else
 		{
 			CDBManager::insert ( "issue_history", "lib_id, student_id, issue_date",
 								 lib_id, student_id, ( gcnew DateTime ( ) )->Now );
+			CDBManager::nonQuery ( "DELETE FROM request_queue WHERE lib_id = " + lib_id +
+								   " AND student_id = '" + student_id + "'" );
 			MessageBox::Show ( "Successfully issued.", "Issued",
 							   MessageBoxButtons::OK, MessageBoxIcon::Asterisk );
 		}
@@ -249,6 +256,24 @@ namespace LibraryMgmt
 		if ( !tbStudentName->Enabled )
 			tbStudentName->Text = CLibDBManager::findStudent ( student_id, true );
 	}
+
+	public: void checkBookStatus ( )
+	{
+		auto reader = CDBManager::query ( "SELECT student_id FROM request_queue "
+										  "WHERE lib_id = " + lib_id + " LIMIT 1"
+										  );
+		if ( reader->Read ( ) )
+		{
+			String ^student_id = reader->GetString ( 0 );
+			cbStudentID->Text = student_id;
+			cbStudentID->Items->Clear ( );
+			cbStudentID->Items->Add ( student_id );
+			cbStudentID->Enabled = false;
+			tbStudentName->Text = CLibDBManager::findStudent ( student_id, true );
+			tbStudentName->Enabled = false;
+		}
+	}
+
 
 };
 }

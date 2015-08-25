@@ -5,7 +5,8 @@
 #include "common.h"
 #include "CDummy.h"
 
-namespace LibraryMgmt {
+namespace LibraryMgmt
+{
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -24,13 +25,13 @@ namespace LibraryMgmt {
 		FacultyUI ^facUI;
 		BooksUI ^booksUI;
 		IssueHistoryUI ^issueHistoryUI;
-	private: System::Windows::Forms::StatusStrip^  statusStrip;
-	private: System::Windows::Forms::ToolStripStatusLabel^  slblStatus;
-	private: System::Windows::Forms::Button^  btHistory;
-	private: System::Windows::Forms::ToolTip^  toolTip;
-	private: System::Windows::Forms::ToolStripStatusLabel^  slblConnected;
+	private: System::Windows::Forms::StatusStrip^ statusStrip;
+	private: System::Windows::Forms::ToolStripStatusLabel^ slblStatus;
+	private: System::Windows::Forms::Button^ btHistory;
+	private: System::Windows::Forms::ToolTip^ toolTip;
+	private: System::Windows::Forms::ToolStripStatusLabel^ slblConnected;
 	public:
-		MainUI(void)
+		MainUI ( void )
 		{
 			InitializeComponent ( );
 			try
@@ -66,16 +67,16 @@ namespace LibraryMgmt {
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		~MainUI()
+		~MainUI ( )
 		{
-			if (components)
+			if ( components )
 			{
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Button^  btFaculty;
-	private: System::Windows::Forms::Button^  btBooks;
-	private: System::ComponentModel::IContainer^  components;
+	private: System::Windows::Forms::Button^ btFaculty;
+	private: System::Windows::Forms::Button^ btBooks;
+	private: System::ComponentModel::IContainer^ components;
 	private:
 		/// <summary>
 		/// Required designer variable.
@@ -83,11 +84,11 @@ namespace LibraryMgmt {
 
 
 #pragma region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		void InitializeComponent(void)
+/// <summary>
+/// Required method for Designer support - do not modify
+/// the contents of this method with the code editor.
+/// </summary>
+		void InitializeComponent ( void )
 		{
 			this->components = ( gcnew System::ComponentModel::Container ( ) );
 			this->btFaculty = ( gcnew System::Windows::Forms::Button ( ) );
@@ -107,7 +108,7 @@ namespace LibraryMgmt {
 			this->btFaculty->FlatAppearance->BorderSize = 0;
 			this->btFaculty->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btFaculty->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>( 0 ) ) );
+																	static_cast<System::Byte>( 0 ) ) );
 			this->btFaculty->Location = System::Drawing::Point ( 12, 12 );
 			this->btFaculty->Name = L"btFaculty";
 			this->btFaculty->Size = System::Drawing::Size ( 237, 242 );
@@ -123,7 +124,7 @@ namespace LibraryMgmt {
 			this->btBooks->FlatAppearance->BorderSize = 0;
 			this->btBooks->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btBooks->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>( 0 ) ) );
+																  static_cast<System::Byte>( 0 ) ) );
 			this->btBooks->Location = System::Drawing::Point ( 255, 12 );
 			this->btBooks->Name = L"btBooks";
 			this->btBooks->Size = System::Drawing::Size ( 237, 242 );
@@ -136,7 +137,7 @@ namespace LibraryMgmt {
 			// statusStrip
 			// 
 			this->statusStrip->BackColor = System::Drawing::SystemColors::ControlDarkDark;
-			this->statusStrip->Items->AddRange ( gcnew cli::array< System::Windows::Forms::ToolStripItem^  > ( 2 ) { this->slblStatus, this->slblConnected } );
+			this->statusStrip->Items->AddRange ( gcnew cli::array< System::Windows::Forms::ToolStripItem^ > ( 2 ) { this->slblStatus, this->slblConnected } );
 			this->statusStrip->Location = System::Drawing::Point ( 0, 257 );
 			this->statusStrip->Name = L"statusStrip";
 			this->statusStrip->Size = System::Drawing::Size ( 747, 22 );
@@ -168,7 +169,7 @@ namespace LibraryMgmt {
 			this->btHistory->FlatAppearance->BorderSize = 0;
 			this->btHistory->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btHistory->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>( 0 ) ) );
+																	static_cast<System::Byte>( 0 ) ) );
 			this->btHistory->Location = System::Drawing::Point ( 498, 12 );
 			this->btHistory->Name = L"btHistory";
 			this->btHistory->Size = System::Drawing::Size ( 237, 242 );
@@ -200,7 +201,7 @@ namespace LibraryMgmt {
 
 		}
 #pragma endregion
-	private: System::Void btFaculty_Click ( System::Object^  sender, System::EventArgs^  e )
+	private: System::Void btFaculty_Click ( System::Object^ sender, System::EventArgs^ e )
 	{
 		if ( !facUI->Visible )
 		{
@@ -210,7 +211,7 @@ namespace LibraryMgmt {
 		facUI->Focus ( );
 	}
 
-	private: System::Void btBooks_Click ( System::Object^  sender, System::EventArgs^  e )
+	private: System::Void btBooks_Click ( System::Object^ sender, System::EventArgs^ e )
 	{
 		if ( !booksUI->Visible )
 		{
@@ -220,7 +221,7 @@ namespace LibraryMgmt {
 		booksUI->Focus ( );
 	}
 
-	private: System::Void btHistory_Click ( System::Object^  sender, System::EventArgs^  e )
+	private: System::Void btHistory_Click ( System::Object^ sender, System::EventArgs^ e )
 	{
 		if ( !issueHistoryUI->Visible )
 		{
@@ -229,5 +230,5 @@ namespace LibraryMgmt {
 		}
 		issueHistoryUI->Focus ( );
 	}
-};
+	};
 }

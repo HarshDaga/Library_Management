@@ -197,11 +197,8 @@ namespace LibraryMgmt {
 	private: System::Void dgvHistory_CellDoubleClick ( System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e )
 	{
 		auto id = dgvHistory->CurrentRow->Cells[ "ID" ]->Value->ToString ( );
-		auto cmd = CDBManager::getCmd ( "UPDATE issue_history SET return_date = @return_date "
-										"WHERE ID = " + id );
-		cmd->Prepare ( );
-		cmd->Parameters->AddWithValue ( "@return_date", ( gcnew DateTime ( ) )->Now );
-		cmd->ExecuteNonQuery ( );
+		CDBManager::update ( "issue_history", "ID = " + id,
+							 "return_date", ( gcnew DateTime ( ) )->Now );
 		MessageBox::Show ( "The book has been returned.", "Returned",
 						   MessageBoxButtons::OK, MessageBoxIcon::Asterisk );
 		refresh ( );

@@ -17,6 +17,7 @@ public:
 
 	static MySqlConnection ^connection = nullptr;
 	static MySqlDataReader ^reader = nullptr;
+	static String ^szConnection = nullptr;
 
 	CDBManager ( )
 	{
@@ -27,8 +28,8 @@ public:
 	void init ( )
 	{
 		StreamReader ^din = File::OpenText ( "connection.ini" );
-		String ^conn = din->ReadToEnd ( )->Replace ( "\n", ";" );
-		connection = gcnew MySqlConnection ( conn + ";persistsecurityinfo=True;table cache=true" );
+		szConnection = din->ReadToEnd ( )->Replace ( "\n", ";" );
+		connection = gcnew MySqlConnection ( szConnection + ";persistsecurityinfo=True;table cache=true" );
 		connection->Open ( );
 	}
 
@@ -98,6 +99,33 @@ public:
 		auto params = cols_csv->Split ( ',' );
 		for ( int i = 0; i != values->Length; ++i )
 			cmd->Parameters->AddWithValue ( params[ i ], values[ i ] );
+		cmd->ExecuteNonQuery ( );
+		return (int) cmd->LastInsertedId;
+	}
+
+	//************************************
+	// Method:    update
+	// FullName:  CDBManager::update
+	// Access:    public static 
+	// Returns:   int	ID of the updated row
+	// Qualifier:
+	// Parameter: String ^table			Table Name
+	// Parameter: String ^where_clause	WHERE clause of the query
+	// Parameter: String ^cols_csv		Column Names (csv)
+	// Parameter: ... array<System::Object^> ^values	Values to insert in order
+	//************************************
+	static int update ( String ^table, String ^where_clause, String ^cols_csv,
+						... array<System::Object^> ^values )
+	{
+		String ^cmdText = "UPDATE " + table + " SET";
+		cols_csv = cols_csv->Replace ( " ", "" );
+		auto params = cols_csv->Split ( ',' );
+		for each ( auto param in params )
+			cmdText += " " + param + " = @" + param + ",";
+		cmdText = cmdText->Remove ( cmdText->Length - 1 ) + " WHERE " + where_clause;
+		auto cmd = getCmd ( cmdText );
+		for ( int i = 0; i != values->Length; ++i )
+			cmd->Parameters->AddWithValue ( "@" + params[ i ], values[ i ] );
 		cmd->ExecuteNonQuery ( );
 		return (int) cmd->LastInsertedId;
 	}

@@ -39,23 +39,22 @@ namespace LibraryMgmt
 #pragma region Controls
 
 
-	private: System::Windows::Forms::GroupBox^  gbAddBook;
-	private: System::Windows::Forms::Button^  btAddBook;
+	private: System::Windows::Forms::GroupBox^ gbAddBook;
+	private: System::Windows::Forms::Button^ btAddBook;
 
-	private: System::Windows::Forms::Label^  Owner;
-	private: System::Windows::Forms::ComboBox^  cbAuthor;
-	private: System::Windows::Forms::ComboBox^  cbOwner;
-	private: System::Windows::Forms::Label^  lblBookName;
-	private: System::Windows::Forms::Label^  lblCategory;
-	private: System::Windows::Forms::Label^  lblAuthor;
-	private: System::Windows::Forms::ComboBox^  cbCategory;
-	private: System::Windows::Forms::ComboBox^  cbBookName;
-	private: System::Windows::Forms::ToolTip^  toolTip;
+	private: System::Windows::Forms::Label^ Owner;
+	private: System::Windows::Forms::ComboBox^ cbAuthor;
+	private: System::Windows::Forms::ComboBox^ cbOwner;
+	private: System::Windows::Forms::Label^ lblBookName;
+	private: System::Windows::Forms::Label^ lblCategory;
+	private: System::Windows::Forms::Label^ lblAuthor;
+	private: System::Windows::Forms::ComboBox^ cbCategory;
+	private: System::Windows::Forms::ComboBox^ cbBookName;
+	private: System::Windows::Forms::ToolTip^ toolTip;
 #pragma endregion
 
 
-
-	private: System::ComponentModel::IContainer^  components;
+	private: System::ComponentModel::IContainer^ components;
 
 	private:
 		/// <summary>
@@ -64,10 +63,10 @@ namespace LibraryMgmt
 
 
 #pragma region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
+/// <summary>
+/// Required method for Designer support - do not modify
+/// the contents of this method with the code editor.
+/// </summary>
 		void InitializeComponent ( void )
 		{
 			this->components = ( gcnew System::ComponentModel::Container ( ) );
@@ -100,7 +99,7 @@ namespace LibraryMgmt
 			// lblBookName
 			// 
 			this->lblBookName->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>( 0 ) ) );
+																	  static_cast<System::Byte>( 0 ) ) );
 			this->lblBookName->Location = System::Drawing::Point ( 23, 78 );
 			this->lblBookName->Name = L"lblBookName";
 			this->lblBookName->Size = System::Drawing::Size ( 270, 20 );
@@ -111,7 +110,7 @@ namespace LibraryMgmt
 			// lblAuthor
 			// 
 			this->lblAuthor->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>( 0 ) ) );
+																	static_cast<System::Byte>( 0 ) ) );
 			this->lblAuthor->Location = System::Drawing::Point ( 299, 78 );
 			this->lblAuthor->Name = L"lblAuthor";
 			this->lblAuthor->Size = System::Drawing::Size ( 174, 20 );
@@ -122,7 +121,7 @@ namespace LibraryMgmt
 			// lblCategory
 			// 
 			this->lblCategory->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>( 0 ) ) );
+																	  static_cast<System::Byte>( 0 ) ) );
 			this->lblCategory->Location = System::Drawing::Point ( 475, 78 );
 			this->lblCategory->Name = L"lblCategory";
 			this->lblCategory->Size = System::Drawing::Size ( 177, 20 );
@@ -145,7 +144,7 @@ namespace LibraryMgmt
 			// Owner
 			// 
 			this->Owner->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>( 0 ) ) );
+																static_cast<System::Byte>( 0 ) ) );
 			this->Owner->Location = System::Drawing::Point ( 654, 78 );
 			this->Owner->Name = L"Owner";
 			this->Owner->Size = System::Drawing::Size ( 161, 20 );
@@ -171,7 +170,7 @@ namespace LibraryMgmt
 			this->btAddBook->FlatAppearance->BorderSize = 0;
 			this->btAddBook->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btAddBook->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>( 0 ) ) );
+																	static_cast<System::Byte>( 0 ) ) );
 			this->btAddBook->Location = System::Drawing::Point ( 27, 145 );
 			this->btAddBook->Name = L"btAddBook";
 			this->btAddBook->Size = System::Drawing::Size ( 788, 50 );
@@ -193,7 +192,7 @@ namespace LibraryMgmt
 			this->gbAddBook->Controls->Add ( this->lblAuthor );
 			this->gbAddBook->Controls->Add ( this->cbCategory );
 			this->gbAddBook->Font = ( gcnew System::Drawing::Font ( L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>( 0 ) ) );
+																	static_cast<System::Byte>( 0 ) ) );
 			this->gbAddBook->Location = System::Drawing::Point ( 12, 13 );
 			this->gbAddBook->Name = L"gbAddBook";
 			this->gbAddBook->Size = System::Drawing::Size ( 854, 353 );
@@ -232,7 +231,7 @@ namespace LibraryMgmt
 		}
 #pragma endregion
 
-	private: System::Void btAddBook_Click ( System::Object^  sender, System::EventArgs^  e )
+	private: System::Void btAddBook_Click ( System::Object^ sender, System::EventArgs^ e )
 	{
 		String ^name = cbBookName->Text;
 		String ^author = cbAuthor->Text;
@@ -298,7 +297,7 @@ namespace LibraryMgmt
 		cbBookName->Items->AddRange ( names->ToArray ( ) );
 	}
 
-	private: System::Void FacultyUI_Shown ( System::Object^  sender, System::EventArgs^  e )
+	private: System::Void FacultyUI_Shown ( System::Object^ sender, System::EventArgs^ e )
 	{
 		cbAuthor_Fetch ( );
 		cbCategory_Fetch ( );
@@ -306,7 +305,7 @@ namespace LibraryMgmt
 		cbBookName_Fetch ( );
 	}
 
-	private: System::Void button1_Click_1 ( System::Object^  sender, System::EventArgs^  e )
+	private: System::Void button1_Click_1 ( System::Object^ sender, System::EventArgs^ e )
 	{
 		StreamReader^ din = File::OpenText ( "Departmental_Library_List.txt" );
 		String^ str;
@@ -339,5 +338,5 @@ namespace LibraryMgmt
 			cmd->ExecuteNonQuery ( );
 		}
 	}
-};
+	};
 }

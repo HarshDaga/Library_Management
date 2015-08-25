@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-08-24 23:08:17
+Date: 2015-08-25 06:57:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -253,7 +253,7 @@ CREATE TABLE `issue_history` (
   KEY `issue_date_idx` (`issue_date`) USING BTREE,
   CONSTRAINT `library_id_fk` FOREIGN KEY (`lib_id`) REFERENCES `library` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `student_id_fk` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of issue_history
@@ -267,6 +267,7 @@ INSERT INTO `issue_history` VALUES ('7', '102', '13102A0064', '2015-08-13 23:44:
 INSERT INTO `issue_history` VALUES ('8', '78', '13102A0035', '2015-08-13 23:46:50', '2015-08-18 23:55:36');
 INSERT INTO `issue_history` VALUES ('9', '102', '13102A0064', '2015-08-24 23:06:09', null);
 
+-- ----------------------------
 -- ----------------------------
 -- Table structure for library
 -- ----------------------------
@@ -335,7 +336,7 @@ INSERT INTO `library` VALUES ('40', '20', '67', '2', '22', '');
 INSERT INTO `library` VALUES ('41', '20', '66', '9', '22', '');
 INSERT INTO `library` VALUES ('42', '21', '14', '9', '18', '');
 INSERT INTO `library` VALUES ('43', '22', '69', '7', '18', '');
-INSERT INTO `library` VALUES ('44', '23', '9', '7', '10', '\0');
+INSERT INTO `library` VALUES ('44', '23', '9', '7', '10', '');
 INSERT INTO `library` VALUES ('45', '24', '7', '7', '1', '');
 INSERT INTO `library` VALUES ('46', '25', '13', '3', '1', '');
 INSERT INTO `library` VALUES ('47', '26', '39', '7', '2', '');
@@ -531,7 +532,7 @@ categories.`name`,
 staff.`name`,
 library.available
 ORDER BY
-request_queue.id ASC ;
+ID ASC ;
 DROP TRIGGER IF EXISTS `Book_Issued`;
 DELIMITER ;;
 CREATE TRIGGER `Book_Issued` AFTER INSERT ON `issue_history` FOR EACH ROW UPDATE dept_library.library

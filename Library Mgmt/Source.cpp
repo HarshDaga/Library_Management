@@ -14,4 +14,4 @@ int WINAPI WinMain ( HINSTANCE hInstance,
 	Application::SetCompatibleTextRenderingDefault ( false );
 	Application::Run ( gcnew MainUI ( ) );
 	return 0;
-} 
+}
