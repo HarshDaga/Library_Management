@@ -1,6 +1,6 @@
 # Depart Library Management System
 
-DLMS ![DLMS Icon](Library_Management/Library Mgmt/$this.Icon.ico) is a cloud-enabled, offline-storage Library Management Application.
+DLMS is a cloud-enabled, offline-storage Library Management Application.
 
   - Records stored in a MySql Database
   - 3NF DataBase
